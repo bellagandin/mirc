@@ -5,7 +5,7 @@ import akka.actor.ActorSelection;
 import java.io.Serializable;
 
 enum Msg implements Serializable {
-    GREET, DONE;
+    Join,Message,Leave,CreateNewChannel, DONE;
 }
 
 public class RegularUser extends AbstractActor {
@@ -24,6 +24,6 @@ public class RegularUser extends AbstractActor {
     @Override
     public void preStart() {
         ActorSelection greeter = getContext().actorSelection("akka.tcp://HelloWorldSystem@127.0.0.1:21/user/Greeter");
-        greeter.tell(Msg.GREET, self());
+        greeter.tell(Msg.Message, self());
     }
 }
