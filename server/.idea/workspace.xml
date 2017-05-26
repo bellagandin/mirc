@@ -1,32 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="0b36ef63-0afb-45ec-932e-7d95c65dabaf" name="Default" comment="added server">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../client/.idea/kotlinc.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../client/src/main/java/sample/hello/Message_NewClient.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/kotlinc.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/sample/hello/Channels.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/sample/hello/Message_NewClient.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/sample/hello/Server.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/sample/hello/ServerClient.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/sample/hello/ServerClients.java" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../client/src/main/java/sample/hello/Message.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/sample/hello/Greeter.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/sample/hello/Greeter.class" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../client/target/classes/sample/hello/Main.class" afterPath="$PROJECT_DIR$/../client/target/classes/sample/hello/Main.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../client/target/classes/sample/hello/Msg.class" afterPath="$PROJECT_DIR$/../client/target/classes/sample/hello/Msg.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/sample/hello/Main2.class" afterPath="$PROJECT_DIR$/target/classes/sample/hello/Main2.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/sample/hello/Msg.class" afterPath="$PROJECT_DIR$/target/classes/sample/hello/Msg.class" />
+    <list default="true" id="0b36ef63-0afb-45ec-932e-7d95c65dabaf" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../client/.idea/uiDesigner.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../client/.idea/workspace.xml" afterPath="$PROJECT_DIR$/../client/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../client/README.md" afterPath="$PROJECT_DIR$/../client/README.md" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../client/src/main/java/sample/hello/Main.java" afterPath="$PROJECT_DIR$/../client/src/main/java/sample/hello/Main.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/README.md" afterPath="$PROJECT_DIR$/README.md" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/sample/hello/Main2.java" afterPath="$PROJECT_DIR$/src/main/java/sample/hello/Main2.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/resources/application.conf" afterPath="$PROJECT_DIR$/src/main/resources/application.conf" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/application.conf" afterPath="$PROJECT_DIR$/target/classes/application.conf" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/../client/src/main/java/sample/hello/RegularUser.java" afterPath="$PROJECT_DIR$/../client/src/main/java/sample/hello/Client.java" />
     </list>
     <ignored path="$PROJECT_DIR$/target/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -725,15 +703,21 @@
       <option name="project" value="LOCAL" />
       <updated>1494925170796</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Message_NewClient&#10;new server actors: ServerCleints, Channels.">
+      <created>1495786638769</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1495786638769</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="15524000" />
+    <option name="totallyTimeSpent" value="15617000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -810,7 +794,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="added server" />
-    <option name="LAST_COMMIT_MESSAGE" value="added server" />
+    <MESSAGE value="Message_NewClient&#10;new server actors: ServerCleints, Channels." />
+    <option name="LAST_COMMIT_MESSAGE" value="Message_NewClient&#10;new server actors: ServerCleints, Channels." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
