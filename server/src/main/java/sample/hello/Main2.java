@@ -9,7 +9,7 @@ public class Main2 {
     //creating the system
     ActorSystem system = ActorSystem.create("HelloWorldSystem");
     //creating system actors
-    system.actorOf(Props.create(Greeter.class), "Greeter");
+    system.actorOf(Props.create(Server.class), "Server");
 
   }
 

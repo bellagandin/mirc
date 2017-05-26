@@ -8,7 +8,7 @@ The `HelloWorld` actor is the application’s “main” class; when it terminat
 
 ## The Greeter
 
-You will be very curious to see how the `Greeter` actor performs the actual task. Open [Greeter.java](src/main/java/sample/hello/Greeter.java).
+You will be very curious to see how the `Greeter` actor performs the actual task. Open [Greeter.java](src/main/java/sample/hello/Server.java).
 
 This is extremely simple now: after its creation this actor will not do anything until someone sends it a message, and if that happens to be an invitation to greet the world then the `Greeter` complies and informs the requester that the deed has been done.
 
