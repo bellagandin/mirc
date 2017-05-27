@@ -4,6 +4,7 @@ import akka.actor.*;
 import akka.pattern.AskableActorSelection;
 import akka.routing.Router;
 import akka.util.Timeout;
+import scala.Array;
 import scala.concurrent.Await;
 import scala.concurrent.Future;
 
@@ -15,9 +16,10 @@ enum Msg implements Serializable {
 }
 
 public class Server extends AbstractActor {
-    private ActorRef serverClients = getContext().actorOf(Props.create(ServerClients.class, "Clients"));
-    private ActorRef Routers = getContext().actorOf(Props.create(Channels.class, "Channels"));
-    Router router;
+    private ActorRef serverClients=getContext().actorOf(Props.create(ServerClients.class), "Clients");
+    private ActorRef Channels=getContext().actorOf(Props.create(Channels.class), "Channels");
+
+
     @Override
     public Receive createReceive() {
         return receiveBuilder()
@@ -25,12 +27,9 @@ public class Server extends AbstractActor {
                     System.out.println("Got a message from : "+m.getUsername());
                     System.out.println("Sending to ServerClient the name of the Client to create new serverClient");
                     serverClients.tell(m,getSender()); //It send a message to the serverClients with the user to create child actor
-                   //TODO: check if the channel exists: if exists add the user to the router. if not creates new router
-                    System.out.println("check if the channel exists: if exists add the user to the router. if not creates new router");
-                    if (ExistActor(m.getChannel())) {
+                    //Channels.tell(m,getSender());
 
-                    }
-                    sender().tell(Msg.DONE, self());//send the sender that we are done
+                    //sender().tell(Msg.DONE, self());//send the sender that we are done
                         }
                 )
                 .matchEquals(Msg.Message, m -> {
@@ -44,25 +43,5 @@ public class Server extends AbstractActor {
 
     }
 
-    private Boolean ExistActor (String Channel) throws Exception {
 
-        ActorSelection sel = context().actorSelection("/user/Server/Channels");
-
-        Timeout t = new Timeout(5, TimeUnit.SECONDS);
-        AskableActorSelection asker = new AskableActorSelection(sel);
-        Future<Object> fut = asker.ask(Channel, t);
-        try {
-            ActorIdentity ident = (ActorIdentity) Await.result(fut, t.duration());
-
-            ActorRef ref = ident.getRef();
-        }
-        catch (Exception e)
-        {
-            System.out.println("here");
-        }
-
-
-
-        return true;
-    }
 }

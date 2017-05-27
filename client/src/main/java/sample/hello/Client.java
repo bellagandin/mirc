@@ -13,11 +13,12 @@ public class Client extends AbstractActor {
     @Override
     public Receive createReceive() {
         return receiveBuilder()
-                .match(String.class, m -> {
-                    System.out.println(m);
-                    sender().tell(Msg.DONE, self());
-                    getContext().stop(self());
-                })
+                    .match(String.class, m -> {
+                        System.out.println(m);
+                        sender().tell(Msg.DONE, self());
+                        getContext().stop(self());
+                    })
+
                 .matchEquals(Msg.DONE, m -> {
                     // when the greeter is done, stop this actor and with it the application
                     sender().tell(Msg.DONE, self());
