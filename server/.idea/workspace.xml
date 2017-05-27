@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="0b36ef63-0afb-45ec-932e-7d95c65dabaf" name="Default" comment="Message_NewClient&#10;new server actors: ServerCleints, Channels.">
+    <list default="true" id="0b36ef63-0afb-45ec-932e-7d95c65dabaf" name="Default" comment="">
       <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/sample/hello/My_Channel.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/sample/hello/Msg.class" afterPath="$PROJECT_DIR$/target/classes/sample/hello/Msg.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../client/.idea/workspace.xml" afterPath="$PROJECT_DIR$/../client/.idea/workspace.xml" />
@@ -682,7 +682,7 @@
       <workItem from="1494922676765" duration="25000" />
       <workItem from="1494923132812" duration="73000" />
       <workItem from="1494924957059" duration="1087000" />
-      <workItem from="1495885562809" duration="2309000" />
+      <workItem from="1495885562809" duration="2731000" />
     </task>
     <task id="LOCAL-00001" summary="added server">
       <created>1494925170796</created>
@@ -698,11 +698,18 @@
       <option name="project" value="LOCAL" />
       <updated>1495786638769</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="the server send a message to the serveClient">
+      <created>1495888076348</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1495888076348</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="27728000" />
+    <option name="totallyTimeSpent" value="28150000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
@@ -767,7 +774,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="added server" />
     <MESSAGE value="Message_NewClient&#10;new server actors: ServerCleints, Channels." />
-    <option name="LAST_COMMIT_MESSAGE" value="Message_NewClient&#10;new server actors: ServerCleints, Channels." />
+    <MESSAGE value="the server send a message to the serveClient" />
+    <option name="LAST_COMMIT_MESSAGE" value="the server send a message to the serveClient" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

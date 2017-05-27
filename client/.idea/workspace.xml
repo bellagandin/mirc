@@ -2,15 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="cad0b3ee-515a-4f38-a950-8e5c20194f16" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../server/src/main/java/sample/hello/My_Channel.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../server/target/classes/sample/hello/Msg.class" afterPath="$PROJECT_DIR$/../server/target/classes/sample/hello/Msg.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/sample/hello/Client.java" afterPath="$PROJECT_DIR$/src/main/java/sample/hello/Client.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../server/.idea/workspace.xml" afterPath="$PROJECT_DIR$/../server/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../server/src/main/java/sample/hello/Channels.java" afterPath="$PROJECT_DIR$/../server/src/main/java/sample/hello/Channels.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../server/src/main/java/sample/hello/Server.java" afterPath="$PROJECT_DIR$/../server/src/main/java/sample/hello/Server.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../server/src/main/java/sample/hello/ServerClient.java" afterPath="$PROJECT_DIR$/../server/src/main/java/sample/hello/ServerClient.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../server/src/main/java/sample/hello/ServerClients.java" afterPath="$PROJECT_DIR$/../server/src/main/java/sample/hello/ServerClients.java" />
     </list>
     <ignored path="$PROJECT_DIR$/target/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -19,6 +12,11 @@
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CoverageDataManager">
+    <SUITE FILE_PATH="coverage/akka_sample_main_java$Main.coverage" NAME="Main Coverage Results" MODIFIED="1495888397453" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>sample.hello.*</FILTER>
+    </SUITE>
   </component>
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
@@ -671,7 +669,7 @@
       <workItem from="1494922585274" duration="109000" />
       <workItem from="1494922956955" duration="237000" />
       <workItem from="1494924601358" duration="1139000" />
-      <workItem from="1495879269076" duration="2916000" />
+      <workItem from="1495879269076" duration="3332000" />
     </task>
     <task id="LOCAL-00001" summary="first commit">
       <created>1494924909070</created>
@@ -684,7 +682,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="23619000" />
+    <option name="totallyTimeSpent" value="24035000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
