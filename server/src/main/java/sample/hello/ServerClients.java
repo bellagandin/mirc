@@ -23,11 +23,12 @@ public class ServerClients extends AbstractActor {
                    //It creates child actor under: /User/Server/ServerClients/"username"
                     System.out.println("Creating new ServerClient for " + m.getUsername());
                     ActorRef child = this.getContext().actorOf(Props.create(ServerClient.class), m.getUsername());
+                    m.setActorClient(child);
                     ActorSelection channels = getContext().actorSelection("/user/Server/Channels");
                   //  a1.tell("hello", ActorRef.noSender());
                     // ActorRef channels =  FindActor("Channels");
                     System.out.println("send to channel message newClient");
-                    channels.tell(m,child);
+                    channels.tell(m,getSender());
                         }
                 ) .build();
     }

@@ -1,7 +1,7 @@
 package sample.hello;
 
 import akka.actor.AbstractActor;
-import akka.actor.ActorRef;
+
 
 /**
  * Created by Bella on 5/26/2017.
@@ -13,8 +13,8 @@ public class ServerClient extends AbstractActor {
         return receiveBuilder()
         .match(String.class, m -> {
             System.out.println(m);
-
-           // sender().tell(Msg.DONE, self());
+            //ActorSelection channels = getContext().actorSelection("/user/Server/Channels");
+           getSender().tell(m, self());
             //getContext().stop(self());
         })
                 .build();

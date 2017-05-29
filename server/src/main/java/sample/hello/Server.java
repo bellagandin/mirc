@@ -24,7 +24,8 @@ public class Server extends AbstractActor {
     public Receive createReceive() {
         return receiveBuilder()
                 .match( Message_NewClient.class, (Message_NewClient m) -> {
-                    System.out.println("Got a message from : "+m.getUsername());
+                    System.out.println("Got a message from : "+ m.getUsername());
+                    System.out.println("Got a message from : "+ getSender());
                     System.out.println("Sending to ServerClient the name of the Client to create new serverClient");
                     serverClients.tell(m,getSender()); //It send a message to the serverClients with the user to create child actor
                     //Channels.tell(m,getSender());

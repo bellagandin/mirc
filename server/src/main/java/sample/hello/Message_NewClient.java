@@ -1,5 +1,7 @@
 package sample.hello;
 
+import akka.actor.ActorRef;
+
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -11,6 +13,7 @@ public class Message_NewClient implements Serializable {
     private String username;
     private String channel;
     private String timeStamp ;
+    private ActorRef client;
 
     Message_NewClient(String username, String channel)
     {
@@ -32,4 +35,12 @@ public class Message_NewClient implements Serializable {
         return this.timeStamp;
     }
 
+    public void setActorClient(ActorRef actor)
+    {
+        this.client = actor;
+    }
+
+    public ActorRef getActorClient() {
+        return this.client;
+    }
 }

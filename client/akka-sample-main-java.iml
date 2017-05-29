@@ -24,5 +24,6 @@
     <orderEntry type="library" name="Maven: io.aeron:aeron-driver:1.2.3" level="project" />
     <orderEntry type="library" name="Maven: io.aeron:aeron-client:1.2.3" level="project" />
     <orderEntry type="library" name="Maven: org.agrona:agrona:0.9.3" level="project" />
+    <orderEntry type="library" name="Maven: com.typesafe.akka.samples:akka-sample-main-java:0.0.0-EMPTY_GIT_REPOSITORY" level="project" />
   </component>
 </module>

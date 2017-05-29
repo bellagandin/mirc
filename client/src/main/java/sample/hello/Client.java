@@ -29,8 +29,10 @@ public class Client extends AbstractActor {
 
     @Override
     public void preStart() {
+        new GuiAppStart();
         ActorSelection greeter = getContext().actorSelection("akka.tcp://HelloWorldSystem@127.0.0.1:22/user/Server");
         Message_NewClient m =  new Message_NewClient("bella","1");
+
         greeter.tell(m, self());
     }
 }

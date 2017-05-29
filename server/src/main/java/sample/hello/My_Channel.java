@@ -29,8 +29,8 @@ public class My_Channel extends AbstractActor{
                 .match( Message_NewClient.class, (Message_NewClient m) -> {
                     System.out.println(getSender());
 
-                    router=router.addRoutee(getSender());
-                    String message = m.getTimeStamp()+ "*** joins: "+ m.getUsername();
+                    router=router.addRoutee(m.getActorClient());
+                    String message ="["+ m.getTimeStamp()+ "]*** joins: "+ m.getUsername();
                     router.route(message, getSender());
 
     })
