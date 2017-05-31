@@ -1,24 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="cad0b3ee-515a-4f38-a950-8e5c20194f16" name="Default" comment="change the name of files&#10;add hashtable to ServerUserActor">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/sample/hello/Message_ChangeUserMode.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/sample/hello/UserMode.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../server/src/main/java/sample/hello/Message_BecomeOwnerChannel.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../server/src/main/java/sample/hello/Message_ChangeUserMode.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../server/src/main/java/sample/hello/UserMode.java" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/sample/hello/GuiAppStart.java" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/sample/hello/Client.java" afterPath="$PROJECT_DIR$/src/main/java/sample/hello/Client.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../server/.idea/workspace.xml" afterPath="$PROJECT_DIR$/../server/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../server/src/main/java/sample/hello/ExtensionFunction.java" afterPath="$PROJECT_DIR$/../server/src/main/java/sample/hello/ExtensionFunction.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../server/src/main/java/sample/hello/Message_SendMessage.java" afterPath="$PROJECT_DIR$/../server/src/main/java/sample/hello/Message_SendMessage.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../server/src/main/java/sample/hello/Server.java" afterPath="$PROJECT_DIR$/../server/src/main/java/sample/hello/Server.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../server/src/main/java/sample/hello/ServerChannelActor.java" afterPath="$PROJECT_DIR$/../server/src/main/java/sample/hello/ServerChannelActor.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../server/src/main/java/sample/hello/ServerChannelMainActor.java" afterPath="$PROJECT_DIR$/../server/src/main/java/sample/hello/ServerChannelMainActor.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../server/src/main/java/sample/hello/ServerUserActor.java" afterPath="$PROJECT_DIR$/../server/src/main/java/sample/hello/ServerUserActor.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../server/src/main/java/sample/hello/ServerUserMainActor.java" afterPath="$PROJECT_DIR$/../server/src/main/java/sample/hello/ServerUserMainActor.java" />
-    </list>
+    <list default="true" id="cad0b3ee-515a-4f38-a950-8e5c20194f16" name="Default" comment="change the name of files&#10;add hashtable to ServerUserActor" />
     <ignored path="$PROJECT_DIR$/target/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
