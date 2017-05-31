@@ -4,7 +4,6 @@ package sample.hello;
 //could just import javax.swing.* and java.awt.* etc..
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowAdapter;
@@ -66,7 +65,7 @@ public class GuiAppStart {
                 //value or vice versa.
                 String usermaneString = username.getText();
                 String channelString = channel.getText();
-                Message_NewClient m= new Message_NewClient(usermaneString,channelString);
+                Message_JoinClient m= new Message_JoinClient(usermaneString,channelString);
 
 
             }

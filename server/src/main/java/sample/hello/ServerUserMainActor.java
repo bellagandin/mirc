@@ -14,21 +14,25 @@ import java.util.concurrent.TimeUnit;
 /**
  * Created by Bella on 5/24/2017.
  */
-public class ServerClients extends AbstractActor {
+public class ServerUserMainActor extends AbstractActor {
+
+
 
     @Override
     public Receive createReceive() {
         return receiveBuilder()
-                .match( Message_NewClient.class, (Message_NewClient m) -> {
-                   //It creates child actor under: /User/Server/ServerClients/"username"
-                    System.out.println("Creating new ServerClient for " + m.getUsername());
-                    ActorRef child = this.getContext().actorOf(Props.create(ServerClient.class), m.getUsername());
-                    m.setActorClient(child);
-                    ActorSelection channels = getContext().actorSelection("/user/Server/Channels");
-                  //  a1.tell("hello", ActorRef.noSender());
-                    // ActorRef channels =  FindActor("Channels");
+                .match(Message_JoinClient.class, (Message_JoinClient m) -> {
+                    //It creates child actor under: /User/Server/ServerUserMainActor/"username"
+                    System.out.println("Creating new ServerUserActor for " + m.getUsername());
+                    ActorRef child = this.getContext().actorOf(Props.create(ServerUserActor.class), m.getUsername());
+                    m.setActorClient(getSender());
+                    ActorSelection channels = getContext().actorSelection("/user/Server/ServerChannelMainActor");
+
                     System.out.println("send to channel message newClient");
-                    channels.tell(m,getSender());
+
+                    channels.tell(m, child);
+
+                    child.tell(m, getSender());
                         }
                 ) .build();
     }
