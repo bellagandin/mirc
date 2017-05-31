@@ -9,10 +9,6 @@ enum Msg implements Serializable {
 }
 
 public class Server extends AbstractActor {
-    private final ActorRef serverClients = getContext().actorOf(Props.create(ServerUserMainActor.class), "Clients");
-    private final ActorRef Channels = getContext().actorOf(Props.create(ServerChannelMainActor.class), "ServerChannelMainActor");
-
-
 
     @Override
     public Receive createReceive() {
@@ -20,10 +16,9 @@ public class Server extends AbstractActor {
                 .match(Message_JoinClient.class, (Message_JoinClient m) -> {
                     System.out.println("Got a message from : "+ m.getUsername());
                     System.out.println("Sending to ServerUserActor the name of the Client to create new serverClient");
-                    serverClients.tell(m,getSender()); //It send a message to the serverClients with the user to create child actor
-                    //ServerChannelMainActor.tell(m,getSender());
+                    ActorSelection ServerUsersMain = getContext().actorSelection("/user/Server/ServerChannelMain");
+                    ServerUsersMain.tell(m, getSender()); //It send a message to the serverClients with the user to create child actor
 
-                    //sender().tell(Msg.DONE, self());//send the sender that we are done
                         }
                 )
 
@@ -31,6 +26,13 @@ public class Server extends AbstractActor {
                     System.out.println("Client Disconnected!");
                 })
                 .build();
+
+    }
+
+    @Override
+    public void preStart() {
+        getContext().actorOf(Props.create(ServerUserMainActor.class), "ServerUsersMain");
+        getContext().actorOf(Props.create(ServerChannelMainActor.class), "ServerChannelMain");
 
     }
 

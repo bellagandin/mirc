@@ -19,8 +19,8 @@ public class ServerChannelMainActor extends AbstractActor {
 
 
                     System.out.println("check if the channel exists: if exists add the user to the router. if not creates new router " + m.getChannel());
-                    ActorSelection sel = context().actorSelection("akka://HelloWorldSystem/user/Server/ServerChannelMainActor");
-                    ActorRef r = helper.GetActorByName(sel, m.getChannel());
+                    ActorSelection sel = context().actorSelection("akka://HelloWorldSystem/user/Server/ServerChannelMain/" + m.getChannel());
+                    ActorRef r = helper.GetActorByName(sel);
                     if (r == null) {
                         System.out.println("there is no channel named:" + m.getChannel());
                         r = getContext().actorOf(Props.create(ServerChannelActor.class), m.getChannel());

@@ -1,11 +1,14 @@
 package sample.hello;
 
+import akka.actor.ActorIdentity;
 import akka.actor.ActorRef;
 import akka.actor.ActorSelection;
+import akka.actor.Identify;
 import akka.pattern.AskableActorSelection;
 import akka.util.Timeout;
 import scala.concurrent.Await;
 import scala.concurrent.Future;
+import scala.concurrent.duration.Duration;
 
 import java.util.concurrent.TimeUnit;
 
@@ -14,21 +17,23 @@ import java.util.concurrent.TimeUnit;
  */
 public class ExtensionFunction {
 
-    public ActorRef GetActorByName(ActorSelection sel, String Channel) {
+    public ActorRef GetActorByName(ActorSelection sel) {
 
-        Timeout t = new Timeout(5, TimeUnit.SECONDS);
         AskableActorSelection asker = new AskableActorSelection(sel);
-        Future<Object> fut = asker.ask(Channel, t);
-        ActorRef ref = null;
+
+        Timeout timeOut = new Timeout(Duration.create(1, TimeUnit.SECONDS));
+        Future<Object> future = asker.ask(new Identify(1), timeOut);
+        ActorIdentity identity;
 
         try {
-
-            ref = (ActorRef) Await.result(fut, t.duration());
+            identity = (ActorIdentity) Await.result(future, timeOut.duration());
+            if (identity.ref().isDefined()) {
+                return identity.ref().get();
+            }
         } catch (Exception e) {
-            System.out.println("here");
+            // timeout passed
         }
-
-        return ref;
+        return null; // not alive anymore
     }
 
 }

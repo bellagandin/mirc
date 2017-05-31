@@ -31,8 +31,18 @@ public class ServerChannelActor extends AbstractActor {
                 .match(Message_LeaveChannel.class, m -> {
                     System.out.println("Got message from " + getSender());
                     router = router.removeRoutee(getSender());
-                    String message = "[" + m.getTimeStamp() + "]*** parts: " + m.getUsername();
-                    router.route(message, m.getActorClient());
+
+                    if (router.routees().isEmpty()) {
+                        getContext().stop(self());
+                    } else {
+                        if (router.routees().size() == 1) {
+                            Message_BecomeOwnerChannel msg = new Message_BecomeOwnerChannel();
+                            msg.channelName = m.getChannel();
+                            router.route(msg, self());
+                        }
+                        String message = "[" + m.getTimeStamp() + "]*** parts: " + m.getUsername();
+                        router.route(message, m.getActorClient());
+                    }
                 })
                 .build();
 

@@ -23,19 +23,26 @@ public class ServerUserActor extends AbstractActor {
                 })
 
                 .match(Message_JoinClient.class, (Message_JoinClient m) -> {
-                    table.put(m.getChannel(), "Owner");
+                    table.put(m.getChannel(), UserMode.OWNER);
+                    Message_ChangeUserMode usermode = new Message_ChangeUserMode(UserMode.OWNER);
+                    m.getActorClient().tell(usermode, self());
                     //m.getActorClient().tell(self(),self());
 
                 })
                 .match(Message_LeaveChannel.class, m -> {
                     System.out.println("Got leave message from " + m.getUsername());
                     table.remove(m.getChannel());
-
                     ActorSelection channel = getContext().actorSelection("/user/Server/ServerChannelMainActor" + m.getChannel());
                     m.setActorClient(getSender());
                     channel.tell(m, self());
 
                 })
+                .match(Message_SendMessage.class, mgs -> {
+                    ActorSelection channel = getContext().actorSelection("/user/Server/ServerChannelMainActor" + mgs.getChannel());
+
+
+                })
+                .match(Message_BecomeOwnerChannel.class, msg -> table.put(msg.channelName, UserMode.OWNER))
                 .build();
     }
 }

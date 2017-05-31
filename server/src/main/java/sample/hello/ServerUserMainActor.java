@@ -22,11 +22,11 @@ public class ServerUserMainActor extends AbstractActor {
     public Receive createReceive() {
         return receiveBuilder()
                 .match(Message_JoinClient.class, (Message_JoinClient m) -> {
-                    //It creates child actor under: /User/Server/ServerUserMainActor/"username"
+                    //It creates child actor under: /User/Server/ServerUsersMain/"username"
                     System.out.println("Creating new ServerUserActor for " + m.getUsername());
                     ActorRef child = this.getContext().actorOf(Props.create(ServerUserActor.class), m.getUsername());
                     m.setActorClient(getSender());
-                    ActorSelection channels = getContext().actorSelection("/user/Server/ServerChannelMainActor");
+                    ActorSelection channels = getContext().actorSelection("/user/Server/ServerChannelMain");
 
                     System.out.println("send to channel message newClient");
 
@@ -38,25 +38,25 @@ public class ServerUserMainActor extends AbstractActor {
     }
 
 
-    private ActorRef FindActor(String actor)
-    {
-        ActorSelection sel = context().actorSelection("akka://HelloWorldSystem/user/Server/");
-
-        Timeout t = new Timeout(5, TimeUnit.SECONDS);
-        AskableActorSelection asker = new AskableActorSelection(sel);
-        Future<Object> fut = asker.ask(actor, t);
-        ActorRef ref= null;
-
-        try {
-
-            ref = (ActorRef) Await.result(fut, t.duration());
-        }
-        catch (Exception e)
-        {
-            System.out.println("here");
-        }
-
-        return ref;
-    }
+//    private ActorRef FindActor(String actor)
+//    {
+//        ActorSelection sel = context().actorSelection("akka://HelloWorldSystem/user/Server/");
+//
+//        Timeout t = new Timeout(5, TimeUnit.SECONDS);
+//        AskableActorSelection asker = new AskableActorSelection(sel);
+//        Future<Object> fut = asker.ask(actor, t);
+//        ActorRef ref= null;
+//
+//        try {
+//
+//            ref = (ActorRef) Await.result(fut, t.duration());
+//        }
+//        catch (Exception e)
+//        {
+//            System.out.println("here");
+//        }
+//
+//        return ref;
+//    }
     }
 
