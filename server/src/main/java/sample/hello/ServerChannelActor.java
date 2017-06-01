@@ -1,9 +1,10 @@
 package sample.hello;
 
 import akka.actor.*;
+import akka.routing.BroadcastRoutingLogic;
 import akka.routing.RoundRobinRoutingLogic;
 import akka.routing.Routee;
-import akka.routing.Router;
+import akka.routing.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,24 +13,36 @@ import java.util.List;
  * Created by Bella on 5/26/2017.
  */
 public class ServerChannelActor extends AbstractActor {
+    private String roomName;
+    Router router;
 
-    List<Routee> routees = new ArrayList<Routee>();
-    Router router = new Router(new RoundRobinRoutingLogic(), routees);
+    public ServerChannelActor(String roomName) {
+        this.roomName = roomName;
+        router = new Router(new BroadcastRoutingLogic());
+    }
+
 
 
     @Override
     public Receive createReceive() {
+
+
         return receiveBuilder()
                 .match(Message_JoinClient.class, (Message_JoinClient m) -> {
-                    System.out.println("Got message from " + getSender());
+                    System.out.println("Got message from " + m.getUsername());
 
-                    router = router.addRoutee(getSender());
+                    router = router.addRoutee(new ActorRefRoutee(sender()));
                     String message = "[" + m.getTimeStamp() + "]*** joins: " + m.getUsername();
-                    router.route(message, m.getActorClient());
+
+                    Message_JoinApproval respond = new Message_JoinApproval();
+                    respond.roomName = roomName;
+                    respond.channelActorRef = self();
+                    sender().tell(respond, self());
+                    broadcastMessage("User " + m.getUsername() + " Has joined!");
 
                 })
                 .match(Message_LeaveChannel.class, m -> {
-                    System.out.println("Got message from " + getSender());
+                    System.out.println("Got message from " + m.getUsername());
                     router = router.removeRoutee(getSender());
 
                     if (router.routees().isEmpty()) {
@@ -45,7 +58,16 @@ public class ServerChannelActor extends AbstractActor {
                     }
                 })
                 .build();
+    }
+
+    private void broadcastMessage(String message) {
+        Message_Broadcast brod = new Message_Broadcast();
+        brod.content = "<" + roomName + "> " + message;
+
+        router.route(brod, self());
 
 
     }
+
+
 }

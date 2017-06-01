@@ -23,7 +23,8 @@ public class ServerChannelMainActor extends AbstractActor {
                     ActorRef r = helper.GetActorByName(sel);
                     if (r == null) {
                         System.out.println("there is no channel named:" + m.getChannel());
-                        r = getContext().actorOf(Props.create(ServerChannelActor.class), m.getChannel());
+                        System.out.println("Creating new Channel");
+                        r = getContext().actorOf(Props.create(ServerChannelActor.class, m.getChannel()), m.getChannel());
 
                     }
                     r.tell(m, getSender());
