@@ -8,7 +8,7 @@ import java.util.Date;
 /**
  * Created by Bella on 5/31/2017.
  */
-public class Message_LeaveChannel {
+public class Message_LeaveChannel extends  Message {
     private String username;
     private String channel;
     private String timeStamp;

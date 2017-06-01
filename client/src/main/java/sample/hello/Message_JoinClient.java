@@ -11,7 +11,7 @@ import java.util.Date;
  */
 
 
-public class Message_JoinClient implements Serializable {
+public class Message_JoinClient extends  Message {
     private String username;
     private String channel;
     private String timeStamp;
