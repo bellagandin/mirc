@@ -50,6 +50,7 @@ public class ServerChannelActor extends AbstractActor {
                     respond.roomTitle = roomName;
                     sender().tell(respond, self());
                     users.add(m.getUsername());
+
                     router = router.addRoutee(getSender());
                     broadcastMessage(message, m.getActorClient());
 
@@ -58,6 +59,9 @@ public class ServerChannelActor extends AbstractActor {
                     System.out.println("Got message from " + getSender());
                     router = router.removeRoutee(getSender());
                     if (router.routees().isEmpty()) {
+                        Message_CloseChannel msg = new Message_CloseChannel();
+                        msg.roomName = m.channel;
+                        getSender().tell(msg, self());
                         getContext().stop(self());
                     } else {
                         if (router.routees().size() == 1) {
@@ -66,7 +70,7 @@ public class ServerChannelActor extends AbstractActor {
                             router.route(msg, self());
                         }
                         String message = "[" + m.timeStamp + "]*** parts: " + m.username;
-                        router.route(message, m.client);
+                        broadcastMessage(message, m.client);
                     }
                 })
                 .build();

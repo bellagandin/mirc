@@ -12,10 +12,11 @@ import java.util.Hashtable;
 public class ServerUserActor extends AbstractActor {
     private Hashtable table = new Hashtable();
     private ActorRef  connectdClient;
-
+    private ExtensionFunction helper;
 
     public ServerUserActor(ActorRef act){
         connectdClient=act;
+        helper = new ExtensionFunction();
     }
 
 
@@ -41,13 +42,14 @@ public class ServerUserActor extends AbstractActor {
                     System.out.println("Got leave message from " + msg.username);
                     table.remove(msg.channel);
                     ActorSelection channelActor = getContext().actorSelection("/user/Server/ServerChannelMain/" + msg.channel);
-                    msg.client = getSender();
+                    msg.client = connectdClient;
                     channelActor.tell(msg, self());
 
                 })
                 .match(Message_ChangeUserMode.class, msg -> table.put(msg.rootName, UserMode.OWNER))
 
-                .match(Message_Broadcast.class,msg -> { System.out.println("Got message to sent to cleint :" + msg);
+                .match(Message_Broadcast.class, msg -> {
+                    System.out.println("Got message to sent to client :" + msg);
                     //ActorSelection channels = getContext().actorSelection("/user/Server/ServerChannelMain");
                     connectdClient.tell(msg, self());
 
@@ -64,6 +66,11 @@ public class ServerUserActor extends AbstractActor {
                     //ActorSelection channels = getContext().actorSelection("/user/Server/ServerChannelMain");
                     connectdClient.tell(msg, self());
 
+                })
+                .match(Message_CloseChannel.class, msg -> {
+                    System.out.println("Got message to sent to client :" + msg);
+                    //ActorSelection channels = getContext().actorSelection("/user/Server/ServerChannelMain");
+                    connectdClient.tell(msg, self());
                 })
                     //getContext().stop(self());})
                 .build();
