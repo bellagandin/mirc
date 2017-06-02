@@ -11,8 +11,13 @@ import java.util.Scanner;
 public class Client extends AbstractActor {
     ActorSelection greeter = null;
     String username;
-    Scanner sc;
+    chatRoom chatGui;
 
+
+    public Client(String name,chatRoom ch){
+        chatGui=ch;
+        username=name;
+    }
 
 
     @Override
@@ -28,13 +33,16 @@ public class Client extends AbstractActor {
                 })
                 .match(Message_JoinApproval.class, m ->{
                     System.out.println(username+" Seccessfully joined channel"+m.roomName);
-                    String msg=sc.next();
-
-
+                    chatGui.roomName=m.roomName;
+                    chatGui.roomNameLbl.setText(m.roomName);
+                    chatGui.channel=m.channelActorRef;
+                    for(int i=0;i<m.userList.size();i++){
+                        chatGui.model.addElement(m.userList.get(i));
+                    }
 
                 })
                 .match(Message_Broadcast.class, mgs -> {
-                    System.out.println(mgs.content);
+                    chatGui.renderMessage(mgs.content);
                 })
 
                 .build();
@@ -43,11 +51,11 @@ public class Client extends AbstractActor {
 
     @Override
     public void preStart() {
-        sc=new Scanner(System.in);
-        username="Roy";
-        greeter = getContext().actorSelection("akka.tcp://HelloWorldSystem@127.0.0.1:22/user/Server");
-        Message_JoinClient m = new Message_JoinClient(username, "room_1");
-
-        greeter.tell(m, self());
+//        sc=new Scanner(System.in);
+//        username="Roy";
+//        greeter = getContext().actorSelection("akka.tcp://HelloWorldSystem@127.0.0.1:22/user/Server");
+//        Message_JoinClient m = new Message_JoinClient(username, "room_1");
+//
+//        greeter.tell(m, self());
     }
 }

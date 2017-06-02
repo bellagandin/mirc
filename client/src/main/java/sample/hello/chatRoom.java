@@ -1,35 +1,52 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package sample.hello;
 
+
+import akka.actor.ActorRef;
+import akka.actor.ActorSelection;
+import akka.actor.ActorSystem;
+import akka.actor.Props;
+import sample.hello.Client;
+
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+
+
 
 /**
  *
  * @author Roy
  */
 public class chatRoom extends javax.swing.JFrame {
-    ArrayList<String> usersList;
+    ActorSystem system;
+    ActorRef    client;
+    ActorRef   channel;
     String roomName;
+    final DefaultListModel model = new DefaultListModel();
+    final DefaultListModel ViewModel = new DefaultListModel();
+
 
     // Variables declaration - do not modify
+    private javax.swing.JList<String> ViewList;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel1;
+    protected javax.swing.JList<String> usersList;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JButton joinBtn;
     private javax.swing.JTextArea messageInput;
     private javax.swing.JTextArea roomMessagesArea;
     private javax.swing.JTextField roomNAmeInput;
-    private javax.swing.JLabel roomNameLbl;
-    private javax.swing.JTextArea roomUsersList;
-    private javax.swing.JLabel roonNameLbl;
-    private javax.swing.JButton sendBtn;
+    protected javax.swing.JLabel roomNameLbl;
+    protected javax.swing.JLabel roonNameLbl;
+    private javax.swing.JButton LeaveBtn;
     private javax.swing.JButton sendBtn1;
-    private javax.swing.JTextField usernameInput;
+    protected javax.swing.JTextField usernameInput;
     // End of variables declaration
 
 
@@ -40,6 +57,7 @@ public class chatRoom extends javax.swing.JFrame {
      */
     public chatRoom() {
         initComponents();
+        system = ActorSystem.create("HelloWorldSystem");
     }
 
     /**
@@ -51,6 +69,9 @@ public class chatRoom extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">
     private void initComponents() {
 
+
+        jScrollPane2 = new javax.swing.JScrollPane();
+        ViewList = new javax.swing.JList<>();
         jLabel1 = new javax.swing.JLabel();
         usernameInput = new javax.swing.JTextField();
         joinBtn = new javax.swing.JButton();
@@ -58,13 +79,23 @@ public class chatRoom extends javax.swing.JFrame {
         roomNAmeInput = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         roomMessagesArea = new javax.swing.JTextArea();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        roomUsersList = new javax.swing.JTextArea();
         roomNameLbl = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
         messageInput = new javax.swing.JTextArea();
-        sendBtn = new javax.swing.JButton();
+        LeaveBtn = new javax.swing.JButton();
         sendBtn1 = new javax.swing.JButton();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        usersList = new javax.swing.JList<>();
+        jScrollPane5 = new javax.swing.JScrollPane();
+        ViewList = new javax.swing.JList<>();
+        jLabel2 = new javax.swing.JLabel();
+
+        ViewList.setModel(new javax.swing.AbstractListModel<String>() {
+            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            public int getSize() { return strings.length; }
+            public String getElementAt(int i) { return strings[i]; }
+        });
+        jScrollPane2.setViewportView(ViewList);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -97,21 +128,17 @@ public class chatRoom extends javax.swing.JFrame {
         roomMessagesArea.setRows(5);
         jScrollPane1.setViewportView(roomMessagesArea);
 
-        roomUsersList.setColumns(20);
-        roomUsersList.setRows(5);
-        jScrollPane2.setViewportView(roomUsersList);
-
-        roomNameLbl.setText("       room Name : users List");
+        roomNameLbl.setText(" room Name : users List");
         roomNameLbl.setToolTipText("");
 
         messageInput.setColumns(20);
         messageInput.setRows(5);
         jScrollPane3.setViewportView(messageInput);
 
-        sendBtn.setText("Leave");
-        sendBtn.addActionListener(new java.awt.event.ActionListener() {
+        LeaveBtn.setText("Leave");
+        LeaveBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                sendBtnActionPerformed(evt);
+                LeaveBtnActionPerformed(evt);
             }
         });
 
@@ -122,6 +149,15 @@ public class chatRoom extends javax.swing.JFrame {
             }
         });
 
+        usersList.setModel(model);
+        jScrollPane4.setViewportView(usersList);
+
+        ViewList.setModel(ViewModel);
+        jScrollPane5.setViewportView(ViewList);
+
+        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel2.setText("Available Chats");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -130,36 +166,42 @@ public class chatRoom extends javax.swing.JFrame {
                                 .addGap(48, 48, 48)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                         .addGroup(layout.createSequentialGroup()
-                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(usernameInput, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                                .addComponent(roonNameLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(roomNAmeInput, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                                .addComponent(joinBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGap(21, 21, 21))
+                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                                        .addGroup(layout.createSequentialGroup()
+                                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                                        .addComponent(jScrollPane3)
+                                                                        .addGroup(layout.createSequentialGroup()
+                                                                                .addGap(28, 28, 28)
+                                                                                .addComponent(sendBtn1, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 79, Short.MAX_VALUE)
+                                                                                .addComponent(LeaveBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                .addGap(35, 35, 35)))
+                                                                .addGap(32, 32, 32)
+                                                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                        .addGroup(layout.createSequentialGroup()
                                                                 .addComponent(jScrollPane1)
                                                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE))
                                                                         .addGroup(layout.createSequentialGroup()
-                                                                                .addGap(18, 18, 18)
-                                                                                .addComponent(roomNameLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                                                .addGap(17, 17, 17))))
-                                                        .addGroup(layout.createSequentialGroup()
-                                                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                                .addComponent(usernameInput, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                                                .addComponent(roonNameLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                                .addComponent(roomNAmeInput, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                                                .addComponent(joinBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                                .addGap(0, 0, Short.MAX_VALUE)))
-                                                .addContainerGap())
-                                        .addGroup(layout.createSequentialGroup()
-                                                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 274, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(sendBtn1, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
-                                                .addComponent(sendBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addGap(25, 25, 25))))
+                                                                                .addGap(32, 32, 32)
+                                                                                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                                        .addGroup(layout.createSequentialGroup()
+                                                                                .addGap(52, 52, 52)
+                                                                                .addComponent(roomNameLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                                        .addGroup(layout.createSequentialGroup()
+                                                                                .addGap(32, 32, 32)
+                                                                                .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                                .addGap(24, 24, 24))))
         );
         layout.setVerticalGroup(
                 layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -176,38 +218,63 @@ public class chatRoom extends javax.swing.JFrame {
                                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 282, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGroup(layout.createSequentialGroup()
                                                 .addComponent(roomNameLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 245, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(jScrollPane4)))
                                 .addGap(18, 18, 18)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                                .addComponent(sendBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addComponent(sendBtn1, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(0, 13, Short.MAX_VALUE))
+                                        .addGroup(layout.createSequentialGroup()
+                                                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGap(29, 29, 29)
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                                        .addComponent(sendBtn1, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                        .addComponent(LeaveBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                .addGap(0, 0, Short.MAX_VALUE))
+                                        .addGroup(layout.createSequentialGroup()
+                                                .addGap(0, 19, Short.MAX_VALUE)
+                                                .addComponent(jLabel2)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGap(48, 48, 48))))
         );
 
         pack();
     }// </editor-fold>
 
-    private void usernameInputActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
+    private void usernameInputActionPerformed(ActionEvent evt) {
     }
 
+
     private void joinBtnActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
+        if (usernameInput.getText().trim().isEmpty() || roomNAmeInput.getText().trim().isEmpty())
+            return;
+
+        String username = usernameInput.getText();
+        String channel = roomNAmeInput.getText();
+        client = system.actorOf(Props.create(Client.class, username, this), "ClientUserActor");
+        ActorSelection serv = system.actorSelection("akka.tcp://HelloWorldSystem@127.0.0.1:22/user/Server");
+        serv.tell(new Message_JoinClient(username, channel), client);
+
     }
 
     private void roomNAmeInputActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
     }
 
-    private void sendBtnActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
+    private void LeaveBtnActionPerformed(java.awt.event.ActionEvent evt){
+
+    }
+    private void sendBtn1ActionPerformed(java.awt.event.ActionEvent evt) {
+        Message_ChatMessage msg=new Message_ChatMessage();
+        msg.userName=usernameInput.getText();
+        msg.roomNAme=roomName;
+        msg.text=messageInput.getText();
+        channel.tell(msg,client);
+
     }
 
-    private void sendBtn1ActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
+    public void renderMessage(String msg){
+        roomMessagesArea.append(msg+ '\n');
+
     }
 
     /**
