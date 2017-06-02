@@ -4,9 +4,6 @@ import akka.actor.*;
 
 import java.io.Serializable;
 
-enum Msg implements Serializable {
-    DONE;
-}
 
 public class Server extends AbstractActor {
 
@@ -21,10 +18,6 @@ public class Server extends AbstractActor {
 
                         }
                 )
-
-                .matchEquals(Msg.DONE, m -> {
-                    System.out.println("Client Disconnected!");
-                })
                 .build();
 
     }
