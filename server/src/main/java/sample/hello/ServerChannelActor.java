@@ -2,12 +2,9 @@ package sample.hello;
 
 import akka.actor.*;
 import akka.routing.BroadcastRoutingLogic;
-import akka.routing.RoundRobinRoutingLogic;
-import akka.routing.Routee;
 import akka.routing.*;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Bella on 5/26/2017.
@@ -15,10 +12,13 @@ import java.util.List;
 public class ServerChannelActor extends AbstractActor {
     private String roomName;
     Router router;
+    private String roomTitle;
+    private ArrayList<String> users;
 
     public ServerChannelActor(String roomName) {
         this.roomName = roomName;
         router = new Router(new BroadcastRoutingLogic());
+        users = new ArrayList<String>();
     }
 
 
@@ -33,13 +33,18 @@ public class ServerChannelActor extends AbstractActor {
 
                     router = router.addRoutee(new ActorRefRoutee(sender()));
                     String message = "[" + m.getTimeStamp() + "]*** joins: " + m.getUsername();
-
+                    users.add(m.getUsername());
                     Message_JoinApproval respond = new Message_JoinApproval();
                     respond.roomName = roomName;
                     respond.channelActorRef = self();
+                    respond.userList = users;
                     sender().tell(respond, self());
                     broadcastMessage("User " + m.getUsername() + " Has joined!");
 
+                })
+                .match(Message_ChatMessage.class, msg -> {
+                    System.out.println(msg.text);
+                    broadcastMessage(msg.userName + ": " + msg.text);
                 })
                 .match(Message_LeaveChannel.class, m -> {
                     System.out.println("Got message from " + m.getUsername());
@@ -62,7 +67,7 @@ public class ServerChannelActor extends AbstractActor {
 
     private void broadcastMessage(String message) {
         Message_Broadcast brod = new Message_Broadcast();
-        brod.content = "<" + roomName + "> " + message;
+        brod.content = "< " + roomName + " > " + message;
 
         router.route(brod, self());
 
