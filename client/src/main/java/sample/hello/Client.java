@@ -38,6 +38,7 @@ public class Client extends AbstractActor {
                     chatRoomPanel newChatChannel=new chatRoomPanel(this.getSelf(),m.roomName);
                     rooms.put(m.roomName,newChatChannel);
                     newChatChannel.changeTitle(m.roomTitle);
+                    window.openNewChanel(m.roomName,newChatChannel);
                     for(int i=0;i<m.userList.size();i++){
                         //chatGui.model.addElement(m.userList.get(i));
                     }

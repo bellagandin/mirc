@@ -166,10 +166,9 @@ public class TabbedChat extends javax.swing.JFrame{
         // over the tab
     }
 
-    public void openNewChanel(String roomName){
+    public void openNewChanel(String roomName,JPanel p){
         if(rooms.containsKey(roomName))
             return;
-        JPanel p=new chatRoomPanel(client,roomName);
         rooms.put(roomName,p);
         addTab(roomName,p);
 
