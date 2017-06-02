@@ -53,6 +53,9 @@ public class ServerChannelActor extends AbstractActor {
 
                     router = router.addRoutee(getSender());
                     broadcastMessage(message, m.getActorClient());
+                    Message_JoinAnnunce msg = new Message_JoinAnnunce();
+                    msg.roomName = m.getChannel();
+                    router.route(msg, self());
 
                 })
                 .match(Message_LeaveChannel.class, m -> {
