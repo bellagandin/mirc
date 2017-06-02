@@ -39,8 +39,11 @@ public class Client extends AbstractActor {
                     rooms.put(m.roomName,newChatChannel);
                     newChatChannel.changeTitle(m.roomTitle);
                     window.openNewChanel(m.roomName,newChatChannel);
+                    chatRoomPanel chat=(chatRoomPanel)rooms.get(m.roomName);
+                    chat.printInMessageArea(
+                            username+" Has joined room: "+m.roomName);
                     for(int i=0;i<m.userList.size();i++){
-                        //chatGui.model.addElement(m.userList.get(i));
+                        chat.addTolist(m.userList.get(i));
                     }
 
                 })

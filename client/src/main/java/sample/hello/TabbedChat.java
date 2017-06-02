@@ -18,7 +18,7 @@ public class TabbedChat extends javax.swing.JFrame{
      * Creates new form chatTabbed
      */
     ActorSystem system;
-    ActorRef client;
+    ActorRef client=null;
     Map<String,JPanel> rooms;
     // Variables declaration - do not modify
     private javax.swing.JLabel jLabel1;
@@ -150,7 +150,8 @@ public class TabbedChat extends javax.swing.JFrame{
 
         String username = userNameInput.getText();
         String channel = roomNameInput.getText();
-        client = system.actorOf(Props.create(Client.class, username, this), "ClientUserActor");
+        if(client == null)
+            client = system.actorOf(Props.create(Client.class, username, this), "ClientUserActor");
         ActorSelection serv = system.actorSelection("akka.tcp://HelloWorldSystem@127.0.0.1:22/user/Server");
         serv.tell(new Message_JoinClient(username, channel), client);
     }
@@ -173,6 +174,7 @@ public class TabbedChat extends javax.swing.JFrame{
         addTab(roomName,p);
 
     }
+
 
     /**
      * @param args the command line arguments
