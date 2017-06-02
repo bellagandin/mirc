@@ -12,4 +12,5 @@ public class Message_JoinApproval extends  Message {
     public String userROle;
     public ActorRef channelActorRef;
     public ArrayList<String> userList;
+    public String roomTitle;
 }
