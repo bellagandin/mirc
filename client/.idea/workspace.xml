@@ -2,27 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="cad0b3ee-515a-4f38-a950-8e5c20194f16" name="Default" comment="added more massage">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/sample/hello/Message_AddUserToChannel.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/sample/hello/Message_ChangeTitle.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/sample/hello/Message_KickUser.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/sample/hello/Message_RemoveUser.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/sample/hello/Message_UserInput.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/sample/hello/Message_banUser.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../server/src/main/java/sample/hello/Message_AddUserToChannel.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../server/src/main/java/sample/hello/Message_ChangeTitle.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../server/src/main/java/sample/hello/Message_KickUser.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../server/src/main/java/sample/hello/Message_RemoveUser.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../server/src/main/java/sample/hello/Message_UserInput.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../server/src/main/java/sample/hello/Message_banUser.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/sample/hello/Client.class" afterPath="$PROJECT_DIR$/target/classes/sample/hello/Client.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/sample/hello/chatRoomPanel.class" afterPath="$PROJECT_DIR$/target/classes/sample/hello/chatRoomPanel.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../server/target/classes/sample/hello/ServerChannelActor.class" afterPath="$PROJECT_DIR$/../server/target/classes/sample/hello/ServerChannelActor.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../server/target/classes/sample/hello/ServerUserActor.class" afterPath="$PROJECT_DIR$/../server/target/classes/sample/hello/ServerUserActor.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/sample/hello/Client.java" afterPath="$PROJECT_DIR$/src/main/java/sample/hello/Client.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/sample/hello/chatRoomPanel.java" afterPath="$PROJECT_DIR$/src/main/java/sample/hello/chatRoomPanel.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../server/.idea/workspace.xml" afterPath="$PROJECT_DIR$/../server/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../server/src/main/java/sample/hello/ServerUserActor.java" afterPath="$PROJECT_DIR$/../server/src/main/java/sample/hello/ServerUserActor.java" />
     </list>
     <list id="c879c491-9b3e-426d-be06-6515c3d98029" name="Rejected commit: Default" comment="change the name of files&#10;add hashtable to ServerUserActor" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -48,7 +28,7 @@
       <file leaf-file-name="ServerUserActor.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/../server/src/main/java/sample/hello/ServerUserActor.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="119">
+            <state relative-caret-position="203">
               <caret line="69" column="43" lean-forward="false" selection-start-line="69" selection-start-column="23" selection-end-line="69" selection-end-column="43" />
               <folding />
             </state>
@@ -83,10 +63,10 @@
             <state relative-caret-position="0">
               <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
               <folding>
-                <marker date="1496423502456" expanded="true" signature="67437:67454" ph="..." />
-                <marker date="1496423502456" expanded="true" signature="67437:67472" ph="..." />
-                <marker date="1496423502456" expanded="true" signature="67437:67485" ph="..." />
-                <marker date="1496423502456" expanded="true" signature="67437:67500" ph="..." />
+                <marker date="1496423573805" expanded="true" signature="66459:66476" ph="..." />
+                <marker date="1496423573805" expanded="true" signature="66459:66494" ph="..." />
+                <marker date="1496423573805" expanded="true" signature="66459:66507" ph="..." />
+                <marker date="1496423573805" expanded="true" signature="66459:66522" ph="..." />
               </folding>
             </state>
           </provider>
@@ -176,6 +156,7 @@
         <option value="$PROJECT_DIR$/src/main/java/sample/hello/Message_RemoveUser.java" />
         <option value="$PROJECT_DIR$/.idea/workspace.xml" />
         <option value="$PROJECT_DIR$/src/main/java/sample/hello/Client.java" />
+        <option value="$PROJECT_DIR$/../server/src/main/java/sample/hello/ServerUserActor.java" />
       </list>
     </option>
   </component>
@@ -685,23 +666,32 @@
     <option name="remove_strategy" value="false" />
   </component>
   <component name="TaskManager">
+    <task id="LOCAL-00001" summary="added more massage">
+      <created>1496423533175</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1496423533175</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="6472000" />
+    <option name="totallyTimeSpent" value="6549000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3289689" sideWeight="0.48638427" order="13" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3289689" sideWeight="0.48638427" order="13" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3372093" sideWeight="0.37362638" order="14" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3289689" sideWeight="0.5" order="15" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33224222" sideWeight="0.62637365" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3286385" sideWeight="0.49394855" order="16" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32733223" sideWeight="0.49394855" order="16" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.22087745" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -1086,10 +1076,10 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <marker date="1496423502456" expanded="true" signature="67437:67454" ph="..." />
-            <marker date="1496423502456" expanded="true" signature="67437:67472" ph="..." />
-            <marker date="1496423502456" expanded="true" signature="67437:67485" ph="..." />
-            <marker date="1496423502456" expanded="true" signature="67437:67500" ph="..." />
+            <marker date="1496423573805" expanded="true" signature="66459:66476" ph="..." />
+            <marker date="1496423573805" expanded="true" signature="66459:66494" ph="..." />
+            <marker date="1496423573805" expanded="true" signature="66459:66507" ph="..." />
+            <marker date="1496423573805" expanded="true" signature="66459:66522" ph="..." />
           </folding>
         </state>
       </provider>
@@ -1106,7 +1096,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/../server/src/main/java/sample/hello/ServerUserActor.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
+        <state relative-caret-position="203">
           <caret line="69" column="43" lean-forward="false" selection-start-line="69" selection-start-column="23" selection-end-line="69" selection-end-column="43" />
           <folding />
         </state>
