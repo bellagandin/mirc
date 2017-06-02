@@ -32,7 +32,7 @@ public class ServerUserMainActor extends AbstractActor {
 
                     channels.tell(m, child);
 
-                    child.tell(m, getSender());
+                    //child.tell(m, getSender());
                         }
                 ) .build();
     }

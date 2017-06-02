@@ -261,7 +261,11 @@ public class chatRoom extends javax.swing.JFrame {
     }
 
     private void LeaveBtnActionPerformed(java.awt.event.ActionEvent evt){
-
+            Message_LeaveChannel msg = new Message_LeaveChannel();
+            msg.username = usernameInput.getText();
+            msg.channel = roomName;
+            client.tell(msg, null);
+           // channel.tell(msg,client);
     }
     private void sendBtn1ActionPerformed(java.awt.event.ActionEvent evt) {
         Message_ChatMessage msg=new Message_ChatMessage();

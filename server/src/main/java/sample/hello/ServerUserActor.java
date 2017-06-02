@@ -17,7 +17,7 @@ public class ServerUserActor extends AbstractActor {
         return receiveBuilder()
                 .match(String.class, m -> {
                     System.out.println("Got message to sent to cleint :" + m);
-                    //ActorSelection channels = getContext().actorSelection("/user/Server/ServerChannelMainActor");
+                    //ActorSelection channels = getContext().actorSelection("/user/Server/ServerChannelMain");
                     getSender().tell(m, self());
                     //getContext().stop(self());
                 })
@@ -29,17 +29,12 @@ public class ServerUserActor extends AbstractActor {
                     //m.getActorClient().tell(self(),self());
 
                 })
-                .match(Message_LeaveChannel.class, m -> {
-                    System.out.println("Got leave message from " + m.getUsername());
-                    table.remove(m.getChannel());
-                    ActorSelection channel = getContext().actorSelection("/user/Server/ServerChannelMainActor" + m.getChannel());
-                    m.setActorClient(getSender());
-                    channel.tell(m, self());
-
-                })
-                .match(Message_SendMessage.class, mgs -> {
-                    ActorSelection channel = getContext().actorSelection("/user/Server/ServerChannelMainActor" + mgs.getChannel());
-
+                .match(Message_LeaveChannel.class, msg -> {
+                    System.out.println("Got leave message from " + msg.username);
+                    table.remove(msg.channel);
+                    ActorSelection channelActor = getContext().actorSelection("/user/Server/ServerChannelMain/" + msg.channel);
+                    msg.client = getSender();
+                    channelActor.tell(msg, self());
 
                 })
                 .match(Message_BecomeOwnerChannel.class, msg -> table.put(msg.channelName, UserMode.OWNER))
