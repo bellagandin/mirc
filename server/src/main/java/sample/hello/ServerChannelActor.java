@@ -47,7 +47,7 @@ public class ServerChannelActor extends AbstractActor {
                     respond.channelActorRef = self();
 
                     respond.userList = users;
-
+                    respond.roomTitle = roomName;
                     sender().tell(respond, self());
                     users.add(m.getUsername());
                     router = router.addRoutee(getSender());

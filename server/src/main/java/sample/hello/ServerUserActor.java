@@ -53,12 +53,14 @@ public class ServerUserActor extends AbstractActor {
 
                 })
 
-                .match(Message_Broadcast.class,msg -> { System.out.println("Got message to sent to client :" + msg);
+                .match(Message_Broadcast.class, msg -> {
+                    System.out.println("Got message to sent to client :" + msg);
                     //ActorSelection channels = getContext().actorSelection("/user/Server/ServerChannelMain");
                     connectdClient.tell(msg, self());
 
                 })
-                .match(Message_JoinApproval.class,msg -> { System.out.println("Got message to sent to client :" + msg);
+                .match(Message_JoinApproval.class, msg -> {
+                    System.out.println("Got message to sent to client :" + msg);
                     //ActorSelection channels = getContext().actorSelection("/user/Server/ServerChannelMain");
                     connectdClient.tell(msg, self());
 
