@@ -3,20 +3,22 @@ package sample.hello;
 import akka.actor.AbstractActor;
 import akka.actor.ActorSelection;
 
-
-import java.io.Serializable;
-import java.util.Scanner;
+import javax.swing.*;
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class Client extends AbstractActor {
-    ActorSelection greeter = null;
+    ActorSelection ServerUserActor;
     String username;
-    chatRoom chatGui;
+    TabbedChat window;
+    Map<String,JPanel> rooms;
 
 
-    public Client(String name,chatRoom ch){
-        chatGui=ch;
+    public Client(String name,TabbedChat ch){
+        window=ch;
         username=name;
+        rooms=new HashMap<String,JPanel>();
     }
 
 
@@ -33,16 +35,20 @@ public class Client extends AbstractActor {
                 })
                 .match(Message_JoinApproval.class, m ->{
                     System.out.println(username+" Seccessfully joined channel"+m.roomName);
-                    chatGui.roomName=m.roomName;
-                    chatGui.roomNameLbl.setText(m.roomName);
-                    chatGui.channel=m.channelActorRef;
+                    chatRoomPanel newChatChannel=new chatRoomPanel(this.getSelf(),m.roomName);
+                    rooms.put(m.roomName,newChatChannel);
+                    newChatChannel.changeTitle(m.roomTitle);
+                    window.openNewChanel(m.roomName,newChatChannel);
+                    chatRoomPanel chat=(chatRoomPanel)rooms.get(m.roomName);
+                    chat.printInMessageArea(
+                            username+" Has joined room: "+m.roomName);
                     for(int i=0;i<m.userList.size();i++){
-                        chatGui.model.addElement(m.userList.get(i));
+                        chat.addTolist(m.userList.get(i));
                     }
 
                 })
                 .match(Message_Broadcast.class, mgs -> {
-                    chatGui.renderMessage(mgs.content);
+                    //chatGui.renderMessage(mgs.content);
                     System.out.println(mgs.content);
                 })
 
