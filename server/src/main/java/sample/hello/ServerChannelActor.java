@@ -14,17 +14,19 @@ public class ServerChannelActor extends AbstractActor {
     private String roomName;
     Router router;
     private String roomTitle;
+    ArrayList<String> users;
 
     public ServerChannelActor(String roomName) {
         this.roomName = roomName;
         router = new Router(new BroadcastRoutingLogic());
+        users = new ArrayList<String>();
+        roomTitle = roomName;
     }
 
 
 
     @Override
     public Receive createReceive() {
-
 
         return receiveBuilder()
                 .match(Message_JoinClient.class, (Message_JoinClient m) -> {
@@ -39,15 +41,15 @@ public class ServerChannelActor extends AbstractActor {
 
                     String message = "[" + m.getTimeStamp() + "]*** joins: " + m.getUsername();
                    // router.route(message, m.getActorClient());
-                    //users.add(m.getUsername());
+
                     Message_JoinApproval respond = new Message_JoinApproval();
                     respond.roomName = roomName;
                     respond.channelActorRef = self();
-                    ArrayList<String> users=null;
+
                     respond.userList = users;
 
                     sender().tell(respond, self());
-                    System.out.println("hereeee");
+                    users.add(m.getUsername());
                     router = router.addRoutee(getSender());
                     broadcastMessage(message, m.getActorClient());
 
@@ -55,7 +57,6 @@ public class ServerChannelActor extends AbstractActor {
                 .match(Message_LeaveChannel.class, m -> {
                     System.out.println("Got message from " + getSender());
                     router = router.removeRoutee(getSender());
-
                     if (router.routees().isEmpty()) {
                         getContext().stop(self());
                     } else {
