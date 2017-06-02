@@ -72,7 +72,13 @@ public class ServerUserActor extends AbstractActor {
                     //ActorSelection channels = getContext().actorSelection("/user/Server/ServerChannelMain");
                     connectdClient.tell(msg, self());
                 })
-                    //getContext().stop(self());})
+                .match(Message_ChatMessage.class, msg -> {
+                    System.out.println("Got message to sent to client :" + msg);
+                    ActorSelection tosend = getContext().actorSelection("/user/Server/ServerUsersMain/" + msg.userName);
+
+                    tosend.tell(msg, self());
+                })
+
                 .build();
     }
 }
