@@ -30,21 +30,26 @@ public class ServerChannelActor extends AbstractActor {
                 .match(Message_JoinClient.class, (Message_JoinClient m) -> {
                     System.out.println("Got message from " + getSender());
                     if (router.routees().isEmpty()) {
-                        Message_BecomeOwnerChannel type = new Message_BecomeOwnerChannel();
-                        type.channelName = m.getChannel();
+                        System.out.println("The room is empty.");
+                        Message_ChangeUserMode type = new Message_ChangeUserMode();
+                        type.rootName = m.getChannel();
                         getSender().tell(type, self());
+                        System.out.println("Sending to User change in UserMode.");
                     }
-                    router = router.addRoutee(getSender());
+
                     String message = "[" + m.getTimeStamp() + "]*** joins: " + m.getUsername();
-                    router.route(message, m.getActorClient());
+                   // router.route(message, m.getActorClient());
                     //users.add(m.getUsername());
                     Message_JoinApproval respond = new Message_JoinApproval();
                     respond.roomName = roomName;
                     respond.channelActorRef = self();
                     ArrayList<String> users=null;
                     respond.userList = users;
+
                     sender().tell(respond, self());
-                    broadcastMessage("User " + m.getUsername() + " Has joined!");
+                    System.out.println("hereeee");
+                    router = router.addRoutee(getSender());
+                    broadcastMessage(message, m.getActorClient());
 
                 })
                 .match(Message_LeaveChannel.class, m -> {
@@ -55,8 +60,8 @@ public class ServerChannelActor extends AbstractActor {
                         getContext().stop(self());
                     } else {
                         if (router.routees().size() == 1) {
-                            Message_BecomeOwnerChannel msg = new Message_BecomeOwnerChannel();
-                            msg.channelName = m.channel;
+                            Message_ChangeUserMode msg = new Message_ChangeUserMode();
+                            msg.rootName = m.channel;
                             router.route(msg, self());
                         }
                         String message = "[" + m.timeStamp + "]*** parts: " + m.username;
@@ -66,11 +71,11 @@ public class ServerChannelActor extends AbstractActor {
                 .build();
     }
 
-    private void broadcastMessage(String message) {
+    private void broadcastMessage(String message,ActorRef sender) {
         Message_Broadcast brod = new Message_Broadcast();
-        brod.content = "< " + roomName + " > " + message;
-
-        router.route(brod, self());
+        brod.content = message;
+        System.out.println("Sending with broadcast");
+        router.route(brod, sender);
 
 
     }

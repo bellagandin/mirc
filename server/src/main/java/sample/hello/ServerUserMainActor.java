@@ -24,13 +24,13 @@ public class ServerUserMainActor extends AbstractActor {
                 .match(Message_JoinClient.class, (Message_JoinClient m) -> {
                     //It creates child actor under: /User/Server/ServerUsersMain/"username"
                     System.out.println("Creating new ServerUserActor for " + m.getUsername());
-                    ActorRef child = this.getContext().actorOf(Props.create(ServerUserActor.class), m.getUsername());
+                    ActorRef child = this.getContext().actorOf(Props.create(ServerUserActor.class, getSender()), m.getUsername());
                     m.setActorClient(getSender());
-                    ActorSelection channels = getContext().actorSelection("/user/Server/ServerChannelMain");
+                    ActorSelection ActorChannelMain = getContext().actorSelection("/user/Server/ServerChannelMain");
 
                     System.out.println("send to channel message newClient");
 
-                    channels.tell(m, child);
+                    ActorChannelMain.tell(m, child);
 
                     //child.tell(m, getSender());
                         }

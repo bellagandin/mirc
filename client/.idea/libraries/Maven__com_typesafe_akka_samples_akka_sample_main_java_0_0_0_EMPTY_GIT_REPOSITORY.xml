@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: com.typesafe.akka.samples:akka-sample-main-java:0.0.0-EMPTY_GIT_REPOSITORY">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/typesafe/akka/samples/akka-sample-main-java/0.0.0-EMPTY_GIT_REPOSITORY/akka-sample-main-java-0.0.0-EMPTY_GIT_REPOSITORY.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/com/typesafe/akka/samples/akka-sample-main-java/0.0.0-EMPTY_GIT_REPOSITORY/akka-sample-main-java-0.0.0-EMPTY_GIT_REPOSITORY-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/typesafe/akka/samples/akka-sample-main-java/0.0.0-EMPTY_GIT_REPOSITORY/akka-sample-main-java-0.0.0-EMPTY_GIT_REPOSITORY-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

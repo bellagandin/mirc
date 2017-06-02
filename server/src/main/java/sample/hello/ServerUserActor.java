@@ -1,6 +1,7 @@
 package sample.hello;
 
 import akka.actor.AbstractActor;
+import akka.actor.ActorRef;
 import akka.actor.ActorSelection;
 
 import java.util.Hashtable;
@@ -10,6 +11,12 @@ import java.util.Hashtable;
  */
 public class ServerUserActor extends AbstractActor {
     private Hashtable table = new Hashtable();
+    private ActorRef  connectdClient;
+
+
+    public ServerUserActor(ActorRef act){
+        connectdClient=act;
+    }
 
 
     @Override
@@ -24,8 +31,9 @@ public class ServerUserActor extends AbstractActor {
 
                 .match(Message_JoinClient.class, (Message_JoinClient m) -> {
                     table.put(m.getChannel(), UserMode.OWNER);
-                    Message_ChangeUserMode usermode = new Message_ChangeUserMode(UserMode.OWNER);
-                    m.getActorClient().tell(usermode, self());
+                    Message_ChangeUserMode usermode = new Message_ChangeUserMode();
+                    usermode.mode = UserMode.OWNER;
+                    connectdClient.tell(usermode, self());
                     //m.getActorClient().tell(self(),self());
 
                 })
@@ -37,7 +45,25 @@ public class ServerUserActor extends AbstractActor {
                     channelActor.tell(msg, self());
 
                 })
-                .match(Message_BecomeOwnerChannel.class, msg -> table.put(msg.channelName, UserMode.OWNER))
+                .match(Message_ChangeUserMode.class, msg -> table.put(msg.rootName, UserMode.OWNER))
+
+                .match(Message_Broadcast.class,msg -> { System.out.println("Got message to sent to cleint :" + msg);
+                    //ActorSelection channels = getContext().actorSelection("/user/Server/ServerChannelMain");
+                    connectdClient.tell(msg, self());
+
+                })
+
+                .match(Message_Broadcast.class,msg -> { System.out.println("Got message to sent to cleint :" + msg);
+                    //ActorSelection channels = getContext().actorSelection("/user/Server/ServerChannelMain");
+                    getSender().tell(msg, self());
+
+                })
+                .match(Message_JoinApproval.class,msg -> { System.out.println("Got message to sent to cleint :" + msg);
+                    //ActorSelection channels = getContext().actorSelection("/user/Server/ServerChannelMain");
+                    getSender().tell(msg, self());
+
+                })
+                    //getContext().stop(self());})
                 .build();
     }
 }

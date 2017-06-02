@@ -43,6 +43,7 @@ public class Client extends AbstractActor {
                 })
                 .match(Message_Broadcast.class, mgs -> {
                     chatGui.renderMessage(mgs.content);
+                    System.out.println(mgs.content);
                 })
 
                 .build();
