@@ -13,12 +13,14 @@ public class Client extends AbstractActor {
     String username;
     TabbedChat window;
     Map<String,JPanel> rooms;
+    int roomsIn;
 
 
     public Client(String name,TabbedChat ch){
         window=ch;
         username=name;
         rooms=new HashMap<String,JPanel>();
+        roomsIn=0;
     }
 
 
@@ -37,6 +39,9 @@ public class Client extends AbstractActor {
                     System.out.println(username+" Seccessfully joined channel"+m.roomName);
                     chatRoomPanel newChatChannel=new chatRoomPanel(this.getSelf(),m.roomName);
                     rooms.put(m.roomName,newChatChannel);
+
+                    if(roomsIn==0)
+                        this.window.ServerActor=sender();
                     newChatChannel.changeTitle(m.roomTitle);
                     window.openNewChanel(m.roomName,newChatChannel);
                     chatRoomPanel chat=(chatRoomPanel)rooms.get(m.roomName);
@@ -45,6 +50,8 @@ public class Client extends AbstractActor {
                     for(int i=0;i<m.userList.size();i++){
                         chat.addTolist(m.userList.get(i));
                     }
+                    roomsIn++;
+
 
                 })
                 .match(Message_Broadcast.class, mgs -> {

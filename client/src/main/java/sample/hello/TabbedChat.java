@@ -20,6 +20,7 @@ public class TabbedChat extends javax.swing.JFrame{
     ActorSystem system;
     ActorRef client=null;
     Map<String,JPanel> rooms;
+    ActorRef ServerActor=null;
     // Variables declaration - do not modify
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -147,13 +148,18 @@ public class TabbedChat extends javax.swing.JFrame{
     private void joinRoomBtnActionPerformed(java.awt.event.ActionEvent evt) {
         if (userNameInput.getText().trim().isEmpty() || roomNameInput.getText().trim().isEmpty())
             return;
-
+        boolean isFirst=false;
         String username = userNameInput.getText();
         String channel = roomNameInput.getText();
-        if(client == null)
-            client = system.actorOf(Props.create(Client.class, username, this), "ClientUserActor");
+        if(client == null){
+            isFirst=true;
+            client = system.actorOf(Props.create(Client.class, username, this), "ClientUserActor");}
         ActorSelection serv = system.actorSelection("akka.tcp://HelloWorldSystem@127.0.0.1:22/user/Server");
-        serv.tell(new Message_JoinClient(username, channel), client);
+
+        Message_JoinClient joi=new Message_JoinClient(username, channel,isFirst);
+        if(!isFirst)
+            joi.setActorClient(this.ServerActor);
+        serv.tell(joi,client);
     }
 
     public void addTab(String name, JPanel panel) { // Takes in a name for the tab and
