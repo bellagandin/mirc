@@ -5,13 +5,9 @@ import akka.actor.ActorRef;
 import akka.actor.ActorSelection;
 import akka.actor.ActorSystem;
 import akka.actor.Props;
-import sample.hello.Client;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.util.ArrayList;
 
 
 
@@ -252,7 +248,7 @@ public class chatRoom extends javax.swing.JFrame {
         String channel = roomNAmeInput.getText();
         client = system.actorOf(Props.create(Client.class, username, this), "ClientUserActor");
         ActorSelection serv = system.actorSelection("akka.tcp://HelloWorldSystem@127.0.0.1:22/user/Server");
-        serv.tell(new Message_JoinClient(username, channel), client);
+        serv.tell(new Message_JoinClient(username, channel,true), client);
 
     }
 

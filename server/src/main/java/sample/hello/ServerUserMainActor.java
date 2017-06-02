@@ -1,15 +1,6 @@
 package sample.hello;
 
-import akka.actor.AbstractActor;
-import akka.actor.ActorRef;
-import akka.actor.ActorSelection;
-import akka.actor.Props;
-import akka.pattern.AskableActorSelection;
-import akka.util.Timeout;
-import scala.concurrent.Await;
-import scala.concurrent.Future;
-
-import java.util.concurrent.TimeUnit;
+import akka.actor.*;
 
 /**
  * Created by Bella on 5/24/2017.
@@ -20,17 +11,28 @@ public class ServerUserMainActor extends AbstractActor {
 
     @Override
     public Receive createReceive() {
+
+
         return receiveBuilder()
                 .match(Message_JoinClient.class, (Message_JoinClient m) -> {
                     //It creates child actor under: /User/Server/ServerUsersMain/"username"
-                    System.out.println("Creating new ServerUserActor for " + m.getUsername());
-                    ActorRef child = this.getContext().actorOf(Props.create(ServerUserActor.class, getSender()), m.getUsername());
-                    m.setActorClient(getSender());
                     ActorSelection ActorChannelMain = getContext().actorSelection("/user/Server/ServerChannelMain");
+                    if(m.getActorClient()==null){
+                        ActorRef child = this.getContext().actorOf(Props.create(ServerUserActor.class, getSender()), m.getUsername());
+                        System.out.println("Creating new ServerUserActor for " + m.getUsername());
+                        m.setActorClient(getSender());
 
-                    System.out.println("send to channel message newClient");
 
-                    ActorChannelMain.tell(m, child);
+                        System.out.println("send to channel message newClient");
+
+                        ActorChannelMain.tell(m, child);
+
+                    }
+                    else{
+                        ActorChannelMain.tell(m,m.getActorClient());
+                    }
+
+
 
                     //child.tell(m, getSender());
                         }

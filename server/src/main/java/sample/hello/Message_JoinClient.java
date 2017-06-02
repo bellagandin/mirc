@@ -2,7 +2,6 @@ package sample.hello;
 
 import akka.actor.ActorRef;
 
-import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -16,13 +15,15 @@ public class Message_JoinClient extends Message {
     private String channel;
     private String timeStamp;
     private ActorRef client;
+    private boolean isFirst;
 
 
-    Message_JoinClient(String username, String channel) {
+    Message_JoinClient(String username, String channel,boolean isFirst) {
         this.username = username;
         this.channel = channel;
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
         this.timeStamp = dateFormat.format(new Date());
+        this.isFirst=isFirst;
     }
 
     public String getUsername() {
@@ -45,4 +46,8 @@ public class Message_JoinClient extends Message {
     public ActorRef getActorClient() {
         return this.client;
     }
+
+    public boolean getIsFirst(){ return  this.isFirst;}
+
+
 }
