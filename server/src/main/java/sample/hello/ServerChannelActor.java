@@ -5,9 +5,7 @@ import akka.routing.BroadcastRoutingLogic;
 
 import akka.routing.Router;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 
 /**
  * Created by Bella on 5/26/2017.
@@ -44,20 +42,14 @@ public class ServerChannelActor extends AbstractActor {
 
                    // router.route(message, m.getActorClient());
 
-                    Message_JoinApproval respond = new Message_JoinApproval(roomName, "", self(), users, roomName);
-//                    respond.roomName = roomName;
-//                    respond.channelActorRef = self();
-//
-//                    respond.userList = users;
-//                    respond.roomTitle = roomName;
+                    Message_JoinApproval respond = new Message_JoinApproval(roomName, "", self(), users, roomTitle);
+
                     sender().tell(respond, self());
                     users.add(m.getUsername());
 
                     router = router.addRoutee(getSender());
                     //broadcastMessage(message, m.getActorClient());
                     Message_UpdateList msg = new Message_UpdateList(m.getChannel(),users);
-//                    msg.roomName = m.getChannel();
-//                   //msg.users = users;
                     router.route(msg, self());
                     String message = "[" + m.getTimeStamp() + "]*** joins: " + m.getUsername();
                     Message_ReceiveMessage rec = new Message_ReceiveMessage(roomName, m.getUsername(), "", message);
@@ -98,6 +90,15 @@ public class ServerChannelActor extends AbstractActor {
                     Message_ReceiveMessage rec = new Message_ReceiveMessage(
                             msg.getRoomName(), msg.getUserName(), "", message);
                     router.route(rec, getSender());
+                })
+                .match(Message_PermissionToChangeTitle.class, msg -> {
+                    System.out.println("Channel actor: rec message from" + msg.getUserName());
+                    roomTitle = msg.getNewTitleName();
+                    System.out.println("The title of the room was change to " + msg.getNewTitleName());
+                    Message_ChangeTitle chan = new Message_ChangeTitle(msg.getRoomName(), msg.getUserName(), msg.getNewTitleName());
+                    router.route(chan, getSender());
+                    //router.route);
+
                 })
                 .build();
     }

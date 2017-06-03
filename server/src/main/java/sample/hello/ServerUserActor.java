@@ -54,12 +54,7 @@ public class ServerUserActor extends AbstractActor {
 
                 })
 
-//                .match(Message_Broadcast.class, msg -> {
-//                    System.out.println("Got message to sent to client :" + msg);
-//                    //ActorSelection channels = getContext().actorSelection("/user/Server/ServerChannelMain");
-//                    connectdClient.tell(msg, self());
-//
-//                })
+
                 .match(Message_JoinApproval.class, msg -> {
                     System.out.println("Got message to sent to client :" + msg);
                     //ActorSelection channels = getContext().actorSelection("/user/Server/ServerChannelMain");
@@ -90,6 +85,18 @@ public class ServerUserActor extends AbstractActor {
                     ActorSelection channelActor = getContext().actorSelection("/user/Server/ServerChannelMain/" + msg.getRoomName());
                     channelActor.tell(msg, getSender());
 
+                })
+                .match(Message_PermissionToChangeTitle.class, msg -> {
+                    System.out.println("Got message to sent to client <Message_PermissionToChangeTitle> :" + msg);
+                    //TODO: add check if have permission
+                    ActorSelection channelActor = getContext().actorSelection("/user/Server/ServerChannelMain/" + msg.getRoomName());
+                    channelActor.tell(msg, getSender());
+
+
+                })
+                .match(Message_ChangeTitle.class, msg -> {
+                    System.out.println("Got message to sent to client <Message_ChangeTitle> :" + msg);
+                    connectdClient.tell(msg, self());
                 })
                 .match(Message_ReceiveMessage.class, m -> {
                     System.out.println(m);
