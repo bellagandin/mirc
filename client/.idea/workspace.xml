@@ -1,17 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="cad0b3ee-515a-4f38-a950-8e5c20194f16" name="Default" comment="added more massage">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/sample/hello/Message_PrivateMessage.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/sample/hello/Message_PublicMessage.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/sample/hello/Message_ReceiveMessage.java" />
+    <list default="true" id="cad0b3ee-515a-4f38-a950-8e5c20194f16" name="Default" comment="add public message and private message">
       <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../server/src/main/java/sample/hello/Message_PrivateMessage.java" />
       <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../server/src/main/java/sample/hello/Message_PublicMessage.java" />
       <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../server/src/main/java/sample/hello/Message_ReceiveMessage.java" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/sample/hello/Message_ChatMessage.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/sample/hello/Message_SendMessage.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/sample/hello/Message_ChatMessage.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/sample/hello/Message_SendMessage.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/java/sample/hello/chatRoom.java" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/../server/src/main/java/sample/hello/Message_ChatMessage.java" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/../server/target/classes/sample/hello/Message_ChatMessage.class" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/../server/target/classes/sample/hello/Message_JoinAnnunce.class" afterPath="" />
@@ -21,21 +15,7 @@
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/sample/hello/chatRoom.class" afterPath="$PROJECT_DIR$/target/classes/sample/hello/chatRoom.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../server/target/classes/sample/hello/Message_Broadcast.class" afterPath="$PROJECT_DIR$/../server/target/classes/sample/hello/Message_Broadcast.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../server/target/classes/sample/hello/ServerChannelActor.class" afterPath="$PROJECT_DIR$/../server/target/classes/sample/hello/ServerChannelActor.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../server/target/classes/sample/hello/ServerUserActor.class" afterPath="$PROJECT_DIR$/../server/target/classes/sample/hello/ServerUserActor.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/sample/hello/Client.java" afterPath="$PROJECT_DIR$/src/main/java/sample/hello/Client.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/sample/hello/Message_AddUserToChannel.java" afterPath="$PROJECT_DIR$/src/main/java/sample/hello/Message_AddUserToChannel.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/sample/hello/Message_Broadcast.java" afterPath="$PROJECT_DIR$/src/main/java/sample/hello/Message_Broadcast.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/sample/hello/Message_ChangeTitle.java" afterPath="$PROJECT_DIR$/src/main/java/sample/hello/Message_ChangeTitle.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/sample/hello/Message_ChangeUserMode.java" afterPath="$PROJECT_DIR$/src/main/java/sample/hello/Message_ChangeUserMode.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/sample/hello/Message_JoinApproval.java" afterPath="$PROJECT_DIR$/src/main/java/sample/hello/Message_JoinApproval.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/sample/hello/Message_KickUser.java" afterPath="$PROJECT_DIR$/src/main/java/sample/hello/Message_KickUser.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/sample/hello/Message_RemoveUser.java" afterPath="$PROJECT_DIR$/src/main/java/sample/hello/Message_RemoveUser.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/sample/hello/Message_UserInput.java" afterPath="$PROJECT_DIR$/src/main/java/sample/hello/Message_UserInput.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/sample/hello/Message_banUser.java" afterPath="$PROJECT_DIR$/src/main/java/sample/hello/Message_banUser.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/sample/hello/chatRoom.java" afterPath="$PROJECT_DIR$/src/main/java/sample/hello/chatRoom.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/sample/hello/chatRoomPanel.java" afterPath="$PROJECT_DIR$/src/main/java/sample/hello/chatRoomPanel.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/resources/application.conf" afterPath="$PROJECT_DIR$/src/main/resources/application.conf" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/application.conf" afterPath="$PROJECT_DIR$/target/classes/application.conf" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../server/.idea/workspace.xml" afterPath="$PROJECT_DIR$/../server/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../server/src/main/java/sample/hello/Message_Broadcast.java" afterPath="$PROJECT_DIR$/../server/src/main/java/sample/hello/Message_Broadcast.java" />
@@ -777,25 +757,33 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1496486139598</updated>
-      <workItem from="1496486153470" duration="12035000" />
+      <workItem from="1496486153470" duration="12646000" />
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="add public message and private message">
+      <created>1496499596747</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1496499596747</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="19248000" />
+    <option name="totallyTimeSpent" value="19859000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3289689" sideWeight="0.48638427" order="13" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3372093" sideWeight="0.37362638" order="14" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.33224222" sideWeight="0.3774584" order="14" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3289689" sideWeight="0.5" order="15" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.33224222" sideWeight="0.62637365" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.33224222" sideWeight="0.6225416" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32569557" sideWeight="0.49394855" order="16" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.22390318" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -852,7 +840,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="added more massage" />
-    <option name="LAST_COMMIT_MESSAGE" value="added more massage" />
+    <MESSAGE value="add public message and private message" />
+    <option name="LAST_COMMIT_MESSAGE" value="add public message and private message" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1009,10 +998,10 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <marker date="1496498646367" expanded="true" signature="79545:79562" ph="..." />
-            <marker date="1496498646367" expanded="true" signature="79545:79580" ph="..." />
-            <marker date="1496498646367" expanded="true" signature="79545:79593" ph="..." />
-            <marker date="1496498646367" expanded="true" signature="79545:79608" ph="..." />
+            <marker date="1496500124555" expanded="true" signature="76539:76556" ph="..." />
+            <marker date="1496500124555" expanded="true" signature="76539:76574" ph="..." />
+            <marker date="1496500124555" expanded="true" signature="76539:76587" ph="..." />
+            <marker date="1496500124555" expanded="true" signature="76539:76602" ph="..." />
           </folding>
         </state>
       </provider>

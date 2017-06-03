@@ -5,7 +5,9 @@ import akka.routing.BroadcastRoutingLogic;
 
 import akka.routing.Router;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * Created by Bella on 5/26/2017.
@@ -35,28 +37,37 @@ public class ServerChannelActor extends AbstractActor {
                         System.out.println("The room is empty.");
                         Message_ChangeUserMode type = new Message_ChangeUserMode();
                         type.rootName = m.getChannel();
+                        type.mode = UserMode.OWNER;
+                        getSender().tell(type, self());
+                        System.out.println("Sending to User change in UserMode.");
+                    } else {
+                        Message_ChangeUserMode type = new Message_ChangeUserMode();
+                        type.rootName = m.getChannel();
+                        type.mode = UserMode.USER;
                         getSender().tell(type, self());
                         System.out.println("Sending to User change in UserMode.");
                     }
 
-                    String message = "[" + m.getTimeStamp() + "]*** joins: " + m.getUsername();
                    // router.route(message, m.getActorClient());
 
-                    Message_JoinApproval respond = new Message_JoinApproval();
-                    respond.roomName = roomName;
-                    respond.channelActorRef = self();
-
-                    respond.userList = users;
-                    respond.roomTitle = roomName;
+                    Message_JoinApproval respond = new Message_JoinApproval(roomName, "", self(), users, roomName);
+//                    respond.roomName = roomName;
+//                    respond.channelActorRef = self();
+//
+//                    respond.userList = users;
+//                    respond.roomTitle = roomName;
                     sender().tell(respond, self());
                     users.add(m.getUsername());
 
                     router = router.addRoutee(getSender());
-                    broadcastMessage(message, m.getActorClient());
-                    Message_JoinAnnunce msg = new Message_JoinAnnunce();
+                    //broadcastMessage(message, m.getActorClient());
+                    Message_UpdateList msg = new Message_UpdateList();
                     msg.roomName = m.getChannel();
+                    msg.users = users;
                     router.route(msg, self());
-
+                    String message = "[" + m.getTimeStamp() + "]*** joins: " + m.getUsername();
+                    Message_ReceiveMessage rec = new Message_ReceiveMessage(roomName, m.getUsername(), "", message);
+                    router.route(rec, self());
                 })
                 .match(Message_LeaveChannel.class, m -> {
                     System.out.println("Got message from " + getSender());
@@ -76,12 +87,19 @@ public class ServerChannelActor extends AbstractActor {
                         broadcastMessage(message, m.client);
                     }
                 })
+                .match(Message_PublicMessage.class, msg -> {
+                    System.out.println("channel actor: rec message from" + msg.getUserName());
+                    String message = "[" + msg.getTimeStamp() + "] < " + msg.getUserName() + "> " + msg.getText();
+                    Message_ReceiveMessage rec = new Message_ReceiveMessage(
+                            msg.getRoomName(), msg.getUserName(), "", message);
+                    router.route(rec, getSender());
+                })
                 .build();
     }
 
+
     private void broadcastMessage(String message,ActorRef sender) {
-        Message_Broadcast brod = new Message_Broadcast();
-        brod.content = message;
+        Message_Broadcast brod = new Message_Broadcast("", message);
         System.out.println("Sending with broadcast");
         router.route(brod, sender);
 
