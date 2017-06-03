@@ -18,12 +18,12 @@ public class Message_JoinClient extends Message {
     private boolean isFirst;
 
 
-    Message_JoinClient(String username, String channel,boolean isFirst) {
+    Message_JoinClient(String username, String channel, boolean isFirst) {
         this.username = username;
         this.channel = channel;
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
         this.timeStamp = dateFormat.format(new Date());
-        this.isFirst=isFirst;
+        this.isFirst = isFirst;
     }
 
     public String getUsername() {
@@ -47,7 +47,9 @@ public class Message_JoinClient extends Message {
         return this.client;
     }
 
-    public boolean getIsFirst(){ return  this.isFirst;}
+    public boolean getIsFirst() {
+        return this.isFirst;
+    }
 
 
 }

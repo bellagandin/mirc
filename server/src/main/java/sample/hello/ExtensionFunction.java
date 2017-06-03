@@ -17,7 +17,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class ExtensionFunction {
 
-    public ActorRef g(ActorSelection sel) {
+    public ActorRef GetActorByName(ActorSelection sel) {
 
         AskableActorSelection asker = new AskableActorSelection(sel);
 
