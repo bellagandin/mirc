@@ -57,11 +57,11 @@ public class Client extends AbstractActor {
 
 
                 })
-                .match(Message_Broadcast.class, mgs -> {
-                    //chatGui.renderMessage(mgs.content);
-                    System.out.println(mgs.getContent());
-                    System.out.println(mgs.getContent());
-                })
+//                .match(Message_Broadcast.class, mgs -> {
+//                    //chatGui.renderMessage(mgs.content);
+//                    System.out.println(mgs.getContent());
+//                    System.out.println(mgs.getContent());
+//                })
                 .match(Message_LeaveChannel.class, mgs -> {
                     String roomToClose=mgs.getChannel();
                     rooms.remove(roomToClose);
@@ -77,6 +77,12 @@ public class Client extends AbstractActor {
                     for(int i=0;i<userL.size();i++){
                         chat.addTolist(userL.get(i));
                     }
+
+                })
+
+                .match(Message_ChangeTitle.class, msg -> {
+                    chatRoomPanel chat = (chatRoomPanel)rooms.get(msg.getRoomName());
+                    chat.changeTitle(msg.getNewTitleName());
 
                 })
                 .match(Message_UserInput.class, msg -> {
@@ -100,7 +106,7 @@ public class Client extends AbstractActor {
                         } else if (type.equals("/title")) {
                             String details[] = theRest.split(" ", 2);
                             String channelName = details[0];
-                            Message_ChangeTitle sen = new Message_ChangeTitle(msg.getRoomName(),msg.getUserName());
+                            Message_PermissionToChangeTitle sen = new Message_PermissionToChangeTitle(channelName,msg.getUserName(),details[1]);
                             connectorActor.tell(sen, self());
                         } else if (type.equals("/kick")) {
                             Message_KickUser sen = new Message_KickUser();

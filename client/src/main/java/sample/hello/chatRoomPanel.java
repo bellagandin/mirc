@@ -38,7 +38,7 @@ public class chatRoomPanel  extends javax.swing.JPanel{
         roomTitle.setText("Welcome to : "+roomName);
         this.username=username;
         this.c=c;
-        roomName=roomName;
+        this.roomName=roomName;
     }
 
     /**
@@ -153,7 +153,7 @@ public class chatRoomPanel  extends javax.swing.JPanel{
         model.addElement(s);
     }
     public void changeTitle(String newTitle){
-        roomName=newTitle;
+        roomName=roomName;
         roomTitle.setText(newTitle);
 
     }
@@ -168,6 +168,7 @@ public class chatRoomPanel  extends javax.swing.JPanel{
     }
 
     private void leaveBtnActionPerformed(java.awt.event.ActionEvent evt) {
+        System.out.println(roomName);
         Message_LeaveChannel lev=new Message_LeaveChannel(this.username,roomName,client);
         c.connectorActor.tell(lev,client);
 
