@@ -45,29 +45,46 @@ public class ServerChannelActor extends AbstractActor {
                     Message_JoinApproval respond = new Message_JoinApproval();
                     respond.roomName = roomName;
                     respond.channelActorRef = self();
-
                     respond.userList = users;
-                    respond.roomTitle = roomName;
+                    respond.roomTitle = roomTitle;
                     sender().tell(respond, self());
                     users.add(m.getUsername());
+
                     router = router.addRoutee(getSender());
                     broadcastMessage(message, m.getActorClient());
 
+                    Message_UpdateList msg = new Message_UpdateList(m.getChannel(),users);
+                    router.route(msg, self());
+
                 })
                 .match(Message_LeaveChannel.class, m -> {
-                    System.out.println("Got message from " + getSender());
+                    System.out.println("Got Leave message from " + m.getUsername());
                     router = router.removeRoutee(getSender());
-                    if (router.routees().isEmpty()) {
-                        getContext().stop(self());
-                    } else {
-                        if (router.routees().size() == 1) {
-                            Message_ChangeUserMode msg = new Message_ChangeUserMode();
-                            msg.rootName = m.channel;
-                            router.route(msg, self());
+                    //sender().tell(m,self());
+//                    if (router.routees().isEmpty()) {
+//                        Message_CloseChannel msg = new Message_CloseChannel();
+//                        msg.roomName = m.getChannel();
+//                        getSender().tell(msg, self());
+//                        getContext().stop(self());
+//                        return;
+//                    } else {
+//                        if (router.routees().size() == 1) {
+//                            Message_ChangeUserMode msg = new Message_ChangeUserMode();
+//                            msg.rootName = m.getChannel();
+//                            msg.mode=UserMode.OWNER;
+//                            router.route(msg, self());
+//                        }
+                        for(int i=0;i<users.size();i++){
+                            if(users.get(i).equals(m.getUsername())){
+                                users.remove(i);
+                                break;
+                            }
                         }
-                        String message = "[" + m.timeStamp + "]*** parts: " + m.username;
-                        router.route(message, m.client);
-                    }
+                        router.route(new Message_UpdateList(roomName,users),sender());
+                        String message = "[" + m.getTimeStamp() + "]*** parts: " + m.getTimeStamp();
+                        broadcastMessage(message, m.getClient());
+                        m.getClient().tell(m,self());
+
                 })
                 .build();
     }
