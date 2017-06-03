@@ -264,11 +264,11 @@ public class chatRoom extends javax.swing.JFrame {
            // channel.tell(msg,client);
     }
     private void sendBtn1ActionPerformed(java.awt.event.ActionEvent evt) {
-        Message_ChatMessage msg=new Message_ChatMessage();
-        msg.userName=usernameInput.getText();
-        msg.roomNAme=roomName;
-        msg.text=messageInput.getText();
-        channel.tell(msg,client);
+//        Message_PrivateMessage msg=new Message_PrivateMessage();
+//        msg.userName=usernameInput.getText();
+//        msg.roomNAme=roomName;
+//        msg.text=messageInput.getText();
+//        channel.tell(msg,client);
 
     }
 

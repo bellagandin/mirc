@@ -2,7 +2,6 @@ package sample.hello;
 
 import akka.actor.AbstractActor;
 import akka.actor.ActorRef;
-import akka.actor.ActorSelection;
 
 import javax.swing.*;
 import java.util.HashMap;
@@ -14,44 +13,44 @@ public class Client extends AbstractActor {
     String username;
     String roomName;
     TabbedChat window;
-    Map<String,JPanel> rooms;
+    Map<String, JPanel> rooms;
     int roomsIn;
 
 
-    public Client(String name,TabbedChat ch){
-        window=ch;
-        username=name;
-        rooms=new HashMap<String,JPanel>();
-        roomsIn=0;
+    public Client(String name, TabbedChat ch) {
+        window = ch;
+        username = name;
+        rooms = new HashMap<String, JPanel>();
+        roomsIn = 0;
     }
 
 
     @Override
     public Receive createReceive() {
         return receiveBuilder()
-                .match(String.class, m -> {
-                    System.out.println(m);
-                    //Message_LeaveChannel l = new Message_LeaveChannel("bella", "1");
-                    // greeter =  getContext().actorSelection("akka.tcp://HelloWorldSystem@127.0.0.1:22/user/Server/Clients/bella");
-                    //greeter.tell(l, self());
-                    getContext().stop(self());
+                .match(Message_ReceiveMessage.class, m -> {
+                    System.out.println(m.getRoomName());
+                    chatRoomPanel chat = (chatRoomPanel)rooms.get(m.getRoomName());
+                    if (chat !=null) {
+                        chat.printInMessageArea(m.getText());
+                    }
 
                 })
-                .match(Message_JoinApproval.class, m ->{
+                .match(Message_JoinApproval.class, m -> {
                     connectorActor = sender();
-                    System.out.println(username+" Seccessfully joined channel"+m.roomName);
-                    chatRoomPanel newChatChannel=new chatRoomPanel(this.getSelf(),m.roomName);
-                    rooms.put(m.roomName,newChatChannel);
+                    System.out.println(username + " Seccessfully joined channel" + m.getRoomName());
+                    chatRoomPanel newChatChannel = new chatRoomPanel(this.getSelf(), m.getRoomName());
+                    rooms.put(m.getRoomName(), newChatChannel);
 
-                    if(roomsIn==0)
-                        this.window.ServerActor=sender();
-                    newChatChannel.changeTitle(m.roomTitle);
-                    window.openNewChanel(m.roomName,newChatChannel);
-                    chatRoomPanel chat=(chatRoomPanel)rooms.get(m.roomName);
-                    chat.printInMessageArea(
-                            username+" Has joined room: "+m.roomName);
-                    for(int i=0;i<m.userList.size();i++){
-                        chat.addTolist(m.userList.get(i));
+                    if (roomsIn == 0)
+                        this.window.ServerActor = sender();
+                    newChatChannel.changeTitle(m.getRoomTitle());
+                    window.openNewChanel(m.getRoomName(), newChatChannel);
+                    chatRoomPanel chat = (chatRoomPanel) rooms.get(m.getRoomName());
+//                    chat.printInMessageArea(
+//                            username + " Has joined room: " + m.roomName);
+                    for (int i = 0; i < m.getUserList().size(); i++) {
+                        chat.addTolist(m.getUserList().get(i));
                     }
                     roomsIn++;
 
@@ -59,36 +58,32 @@ public class Client extends AbstractActor {
                 })
                 .match(Message_Broadcast.class, mgs -> {
                     //chatGui.renderMessage(mgs.content);
-                    System.out.println(mgs.content);
+                    System.out.println(mgs.getContent());
                 })
                 .match(Message_UserInput.class, msg -> {
 
-                    String arr[] = msg.text.split(" ", 2);
+                    String arr[] = msg.getText().split(" ", 2);
                     String type = arr[0];
-                    if (arr.length>1) {
-
-
-
+                    if (arr.length > 1) {
                         String theRest = arr[1];
-
                         if (type.equals("/w")) {
-                            Message_ChatMessage sen = new Message_ChatMessage();
-                            String details[] =theRest.split(" ", 2);
+
+                            String details[] = theRest.split(" ", 2);
                             String toWhomToSend = details[0];
-                            sen.text = details[1];
-                            sen.userName = toWhomToSend;
-                            sen.roomNAme = roomName;
-                            connectorActor.tell(sen, self());
+                            if (details.length > 1) {
+                                Message_PrivateMessage sen = new Message_PrivateMessage(details[1],msg.getRoomName(),msg.getUserName(),toWhomToSend);
+                                connectorActor.tell(sen, self());
+                            }
                         } else if (type.equals("/leave")) {
                             Message_LeaveChannel sen = new Message_LeaveChannel();
                             sen.username = username;
                             sen.channel = roomName;
                             connectorActor.tell(sen, self());
                         } else if (type.equals("/title")) {
-                            Message_ChangeTitle sen = new Message_ChangeTitle();
-                            sen.userName = username;
-                            sen.roomNAme = roomName;
-                            connectorActor.tell(sen, self());
+//                            Message_ChangeTitle sen = new Message_ChangeTitle();
+//                            sen.userName = username;
+//                            sen.roomNAme = roomName;
+//                            connectorActor.tell(sen, self());
                         } else if (type.equals("/kick")) {
                             Message_KickUser sen = new Message_KickUser();
                             sen.userName = username;
@@ -97,20 +92,20 @@ public class Client extends AbstractActor {
                             sen.ToKick = kicked[0];
                             connectorActor.tell(sen, self());
                         } else if (type.equals("/ban")) {
-                            Message_banUser sen = new Message_banUser();
-                            sen.userName = username;
-                            sen.roomNAme = roomName;
-                            String ban[] = theRest.split(" ", 2);
-                            sen.banUser = ban[0];
-                            connectorActor.tell(sen, self());
+//                            Message_banUser sen = new Message_banUser();
+//                            sen.userName = username;
+//                            sen.roomNAme = roomName;
+//                            String ban[] = theRest.split(" ", 2);
+//                            sen.banUser = ban[0];
+//                            connectorActor.tell(sen, self());
                         } else if (type.equals("/add")) {
-                            Message_AddUserToChannel sen = new Message_AddUserToChannel();
-                            sen.userName = username;
-                            sen.roomNAme = roomName;
-                            String res[] = theRest.split(" ", 3);
-                            sen.addedUser = res[2];
-                            sen.listType = res[1];
-                            connectorActor.tell(sen, self());
+//                            Message_AddUserToChannel sen = new Message_AddUserToChannel();
+//                            sen.userName = username;
+//                            sen.roomNAme = roomName;
+//                            String res[] = theRest.split(" ", 3);
+//                            sen.addedUser = res[2];
+//                            sen.listType = res[1];
+//                            connectorActor.tell(sen, self());
                         } else if (type.equals("/remove ")) {
                             Message_RemoveUser sen = new Message_RemoveUser();
                             sen.userName = username;
@@ -119,17 +114,17 @@ public class Client extends AbstractActor {
                             sen.delUser = res[2];
                             sen.listType = res[1];
                             connectorActor.tell(sen, self());
-                        } else {
                         }
+                    }
+                    else{
+                        Message_PublicMessage sen = new Message_PublicMessage(username,msg.getRoomName(),msg.getText());
+                        connectorActor.tell(sen, self());
                     }
 
                 })
 
                 .build();
     }
-
-
-
 
 
     @Override
