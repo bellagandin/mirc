@@ -39,10 +39,9 @@ public class ServerUserActor extends AbstractActor {
 
                 })
                 .match(Message_LeaveChannel.class, msg -> {
-                    System.out.println("Got leave message from " + msg.username);
-                    table.remove(msg.channel);
-                    ActorSelection channelActor = getContext().actorSelection("/user/Server/ServerChannelMain/" + msg.channel);
-                    msg.client = connectdClient;
+                    System.out.println("Got leave message from " + msg.getUsername());
+                    table.remove(msg.getChannel());
+                    ActorSelection channelActor = getContext().actorSelection("/user/Server/ServerChannelMain/" + msg.getChannel());
                     channelActor.tell(msg, self());
 
                 })
@@ -72,12 +71,17 @@ public class ServerUserActor extends AbstractActor {
                     //ActorSelection channels = getContext().actorSelection("/user/Server/ServerChannelMain");
                     connectdClient.tell(msg, self());
                 })
+                .match(Message_UpdateList.class, msg -> {
+                    System.out.println("Got message to sent to client :" + msg);
+                    //ActorSelection channels = getContext().actorSelection("/user/Server/ServerChannelMain");
+                    connectdClient.tell(msg, self());
+                })
                 .match(Message_PrivateMessage.class, msg -> {
                     System.out.println("Got message to sent to client :" + msg.getRoomName());
                     ActorSelection toSend = getContext().actorSelection("/user/Server/ServerUsersMain/" + msg.getSpecificUserName());
                     String message = "[" + msg.getTimeStamp() + "] < " + msg.getSpecificUserName() + "> " + msg.getText();
                     Message_ReceiveMessage rec = new Message_ReceiveMessage(
-                            msg.getRoomName(), "", msg.getSpecificUserName(), msg.getText());
+                            msg.getRoomName(), "", msg.getSpecificUserName(), message);
                     toSend.tell(rec, self());
                 })
                 .match(Message_PublicMessage.class, msg -> {

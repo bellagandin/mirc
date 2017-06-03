@@ -5,6 +5,7 @@ import akka.actor.ActorRef;
 
 import javax.swing.*;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -13,7 +14,7 @@ public class Client extends AbstractActor {
     String username;
     String roomName;
     TabbedChat window;
-    Map<String, JPanel> rooms;
+    Map<String,JPanel> rooms;
     int roomsIn;
 
 
@@ -59,6 +60,24 @@ public class Client extends AbstractActor {
                 .match(Message_Broadcast.class, mgs -> {
                     //chatGui.renderMessage(mgs.content);
                     System.out.println(mgs.getContent());
+                    System.out.println(mgs.getContent());
+                })
+                .match(Message_LeaveChannel.class, mgs -> {
+                    String roomToClose=mgs.getChannel();
+                    rooms.remove(roomToClose);
+                    roomsIn--;
+                    window.closeChannel(roomToClose);
+
+                })
+                .match(Message_UpdateList.class, mgs -> {
+                    System.out.println("Hello");
+                    chatRoomPanel chat=(chatRoomPanel) rooms.get(mgs.getRoomName());
+                    chat.clearList();
+                    List<String> userL=mgs.getUserList();
+                    for(int i=0;i<userL.size();i++){
+                        chat.addTolist(userL.get(i));
+                    }
+
                 })
                 .match(Message_UserInput.class, msg -> {
 
@@ -75,11 +94,14 @@ public class Client extends AbstractActor {
                                 connectorActor.tell(sen, self());
                             }
                         } else if (type.equals("/leave")) {
-                            Message_LeaveChannel sen = new Message_LeaveChannel();
-                            sen.username = username;
-                            sen.channel = roomName;
+                            Message_LeaveChannel sen = new Message_LeaveChannel(username,msg.roomName,
+                                    self());
                             connectorActor.tell(sen, self());
                         } else if (type.equals("/title")) {
+                            Message_ChangeTitle sen = new Message_ChangeTitle();
+                            sen.userName = username;
+                            sen.roomNAme = msg.roomName;
+                            connectorActor.tell(sen, self());
 //                            Message_ChangeTitle sen = new Message_ChangeTitle();
 //                            sen.userName = username;
 //                            sen.roomNAme = roomName;
@@ -87,7 +109,7 @@ public class Client extends AbstractActor {
                         } else if (type.equals("/kick")) {
                             Message_KickUser sen = new Message_KickUser();
                             sen.userName = username;
-                            sen.roomNAme = roomName;
+                            sen.roomNAme = msg.roomName;
                             String kicked[] = theRest.split(" ", 2);
                             sen.ToKick = kicked[0];
                             connectorActor.tell(sen, self());
@@ -109,7 +131,7 @@ public class Client extends AbstractActor {
                         } else if (type.equals("/remove ")) {
                             Message_RemoveUser sen = new Message_RemoveUser();
                             sen.userName = username;
-                            sen.roomNAme = roomName;
+                            sen.roomNAme = msg.roomName;
                             String res[] = theRest.split(" ", 3);
                             sen.delUser = res[2];
                             sen.listType = res[1];

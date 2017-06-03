@@ -11,8 +11,10 @@ import javax.swing.*;
 public class chatRoomPanel  extends javax.swing.JPanel{
 
     ActorSystem system;
+    String username;
     ActorRef client;
-    ActorRef   channel;
+    Client c;
+    ActorRef   channel; //may  be useless
     String roomName;
     final DefaultListModel model = new DefaultListModel();
 
@@ -29,11 +31,13 @@ public class chatRoomPanel  extends javax.swing.JPanel{
     private javax.swing.JButton sendBtn;
     private javax.swing.JList<String> usersList;
     // End of variables declaration
-    public chatRoomPanel(ActorRef client,String roomName) {
+    public chatRoomPanel(ActorRef client,String roomName,String username,Client c) {
 
         this.client=client;
         initComponents();
         roomTitle.setText("Welcome to : "+roomName);
+        this.username=username;
+        this.c=c;
         roomName=roomName;
     }
 
@@ -151,6 +155,7 @@ public class chatRoomPanel  extends javax.swing.JPanel{
     public void changeTitle(String newTitle){
         roomName=newTitle;
         roomTitle.setText(newTitle);
+
     }
 
 
@@ -163,16 +168,18 @@ public class chatRoomPanel  extends javax.swing.JPanel{
     }
 
     private void leaveBtnActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
+        Message_LeaveChannel lev=new Message_LeaveChannel(this.username,roomName,client);
+        c.connectorActor.tell(lev,client);
+
+
+
+
+
+
     }
 
 
-
-
-
-
-
-
-
-
+    public void clearList() {
+        model.clear();
+    }
 }

@@ -37,13 +37,7 @@ public class ServerChannelActor extends AbstractActor {
                         System.out.println("The room is empty.");
                         Message_ChangeUserMode type = new Message_ChangeUserMode();
                         type.rootName = m.getChannel();
-                        type.mode = UserMode.OWNER;
-                        getSender().tell(type, self());
-                        System.out.println("Sending to User change in UserMode.");
-                    } else {
-                        Message_ChangeUserMode type = new Message_ChangeUserMode();
-                        type.rootName = m.getChannel();
-                        type.mode = UserMode.USER;
+
                         getSender().tell(type, self());
                         System.out.println("Sending to User change in UserMode.");
                     }
@@ -61,31 +55,42 @@ public class ServerChannelActor extends AbstractActor {
 
                     router = router.addRoutee(getSender());
                     //broadcastMessage(message, m.getActorClient());
-                    Message_UpdateList msg = new Message_UpdateList();
-                    msg.roomName = m.getChannel();
-                    msg.users = users;
+                    Message_UpdateList msg = new Message_UpdateList(m.getChannel(),users);
+//                    msg.roomName = m.getChannel();
+//                   //msg.users = users;
                     router.route(msg, self());
                     String message = "[" + m.getTimeStamp() + "]*** joins: " + m.getUsername();
                     Message_ReceiveMessage rec = new Message_ReceiveMessage(roomName, m.getUsername(), "", message);
                     router.route(rec, self());
                 })
                 .match(Message_LeaveChannel.class, m -> {
-                    System.out.println("Got message from " + getSender());
+                    System.out.println("Got Leave message from " + m.getUsername());
                     router = router.removeRoutee(getSender());
-                    if (router.routees().isEmpty()) {
-                        Message_CloseChannel msg = new Message_CloseChannel();
-                        msg.roomName = m.channel;
-                        getSender().tell(msg, self());
-                        getContext().stop(self());
-                    } else {
-                        if (router.routees().size() == 1) {
-                            Message_ChangeUserMode msg = new Message_ChangeUserMode();
-                            msg.rootName = m.channel;
-                            router.route(msg, self());
+                    //sender().tell(m,self());
+//                    if (router.routees().isEmpty()) {
+//                        Message_CloseChannel msg = new Message_CloseChannel();
+//                        msg.roomName = m.getChannel();
+//                        getSender().tell(msg, self());
+//                        getContext().stop(self());
+//                        return;
+//                    } else {
+//                        if (router.routees().size() == 1) {
+//                            Message_ChangeUserMode msg = new Message_ChangeUserMode();
+//                            msg.rootName = m.getChannel();
+//                            msg.mode=UserMode.OWNER;
+//                            router.route(msg, self());
+//                        }
+                        for(int i=0;i<users.size();i++){
+                            if(users.get(i).equals(m.getUsername())){
+                                users.remove(i);
+                                break;
+                            }
                         }
-                        String message = "[" + m.timeStamp + "]*** parts: " + m.username;
-                        broadcastMessage(message, m.client);
-                    }
+                        router.route(new Message_UpdateList(roomName,users),sender());
+                        String message = "[" + m.getTimeStamp() + "]*** parts: " + m.getTimeStamp();
+                        broadcastMessage(message, m.getClient());
+                        m.getClient().tell(m,self());
+
                 })
                 .match(Message_PublicMessage.class, msg -> {
                     System.out.println("channel actor: rec message from" + msg.getUserName());
