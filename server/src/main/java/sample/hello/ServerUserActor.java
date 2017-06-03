@@ -83,6 +83,7 @@ public class ServerUserActor extends AbstractActor {
                     Message_ReceiveMessage rec = new Message_ReceiveMessage(
                             msg.getRoomName(), "", msg.getSpecificUserName(), message);
                     toSend.tell(rec, self());
+                    connectdClient.tell(rec, self());
                 })
                 .match(Message_PublicMessage.class, msg -> {
                     System.out.println("Got message to sent to client <Message_PublicMessage> :" + msg);

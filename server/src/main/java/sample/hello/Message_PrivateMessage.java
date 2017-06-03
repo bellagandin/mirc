@@ -10,13 +10,15 @@ public class Message_PrivateMessage extends Message {
     private String text;
     private String roomName;
     private String specificUserName;
+    private String sender;
     SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
     private String timeStamp = dateFormat.format(new Date());
 
-    public Message_PrivateMessage(String text, String roomName, String userName) {
+    public Message_PrivateMessage(String text, String roomName, String sender, String userName) {
         this.text = text;
         this.roomName = roomName;
         this.specificUserName = userName;
+        this.sender = sender;
     }
 
     public String getText() {
@@ -34,5 +36,9 @@ public class Message_PrivateMessage extends Message {
 
     public String getSpecificUserName() {
         return specificUserName;
+    }
+
+    public String getSender() {
+        return sender;
     }
 }
