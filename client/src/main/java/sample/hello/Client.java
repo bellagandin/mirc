@@ -40,7 +40,7 @@ public class Client extends AbstractActor {
                 .match(Message_JoinApproval.class, m -> {
                     connectorActor = sender();
                     System.out.println(username + " Seccessfully joined channel" + m.getRoomName());
-                    chatRoomPanel newChatChannel = new chatRoomPanel(this.getSelf(), m.getRoomName());
+                    chatRoomPanel newChatChannel = new chatRoomPanel(this.getSelf(), m.getRoomName(),username,this);
                     rooms.put(m.getRoomName(), newChatChannel);
 
                     if (roomsIn == 0)
@@ -94,22 +94,18 @@ public class Client extends AbstractActor {
                                 connectorActor.tell(sen, self());
                             }
                         } else if (type.equals("/leave")) {
-                            Message_LeaveChannel sen = new Message_LeaveChannel(username,msg.roomName,
+                            Message_LeaveChannel sen = new Message_LeaveChannel(username,msg.getRoomName(),
                                     self());
                             connectorActor.tell(sen, self());
                         } else if (type.equals("/title")) {
-                            Message_ChangeTitle sen = new Message_ChangeTitle();
-                            sen.userName = username;
-                            sen.roomNAme = msg.roomName;
+                            String details[] = theRest.split(" ", 2);
+                            String channelName = details[0];
+                            Message_ChangeTitle sen = new Message_ChangeTitle(msg.getRoomName(),msg.getUserName());
                             connectorActor.tell(sen, self());
-//                            Message_ChangeTitle sen = new Message_ChangeTitle();
-//                            sen.userName = username;
-//                            sen.roomNAme = roomName;
-//                            connectorActor.tell(sen, self());
                         } else if (type.equals("/kick")) {
                             Message_KickUser sen = new Message_KickUser();
                             sen.userName = username;
-                            sen.roomNAme = msg.roomName;
+                            sen.roomNAme = msg.getRoomName();
                             String kicked[] = theRest.split(" ", 2);
                             sen.ToKick = kicked[0];
                             connectorActor.tell(sen, self());
@@ -131,7 +127,7 @@ public class Client extends AbstractActor {
                         } else if (type.equals("/remove ")) {
                             Message_RemoveUser sen = new Message_RemoveUser();
                             sen.userName = username;
-                            sen.roomNAme = msg.roomName;
+                            sen.roomNAme = msg.getRoomName();
                             String res[] = theRest.split(" ", 3);
                             sen.delUser = res[2];
                             sen.listType = res[1];

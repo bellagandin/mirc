@@ -161,7 +161,7 @@ public class chatRoomPanel  extends javax.swing.JPanel{
 
 
     private void sendBtnActionPerformed(java.awt.event.ActionEvent evt) {
-        Message_UserInput msg = new Message_UserInput("",roomName,messageInput.getText());
+        Message_UserInput msg = new Message_UserInput(username,roomName,messageInput.getText());
 
         client.tell(msg,null);
 

@@ -182,6 +182,23 @@ public class TabbedChat extends javax.swing.JFrame{
     }
 
 
+    public void closeChannel(String roomName){
+        rooms.remove(roomName);
+        removeTabWithTitle(roomName);
+    }
+
+    private void removeTabWithTitle(String tabTitleToRemove) {
+
+        for (int i = 0; i < jTabbedPane1.getTabCount(); i++) {
+            String tabTitle = jTabbedPane1.getTitleAt(i);
+            if (tabTitle.equals(tabTitleToRemove)) {
+                jTabbedPane1.remove(i);
+                break;
+            }
+        }
+    }
+
+
     /**
      * @param args the command line arguments
      */
