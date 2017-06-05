@@ -12,9 +12,10 @@ import java.util.Map;
 public class Client extends AbstractActor {
     ActorRef connectorActor;
     String username;
+    UserMode UserType;
     String roomName;
     TabbedChat window;
-    Map<String,JPanel> rooms;
+    Map<String, JPanel> rooms;
     int roomsIn;
 
 
@@ -30,9 +31,9 @@ public class Client extends AbstractActor {
     public Receive createReceive() {
         return receiveBuilder()
                 .match(Message_ReceiveMessage.class, m -> {
-                    System.out.println(m.getRoomName());
-                    chatRoomPanel chat = (chatRoomPanel)rooms.get(m.getRoomName());
-                    if (chat !=null) {
+                    System.out.println(m.getText());
+                    chatRoomPanel chat = (chatRoomPanel) rooms.get(m.getRoomName());
+                    if (chat != null) {
                         chat.printInMessageArea(m.getText());
                     }
 
@@ -40,7 +41,7 @@ public class Client extends AbstractActor {
                 .match(Message_JoinApproval.class, m -> {
                     connectorActor = sender();
                     System.out.println(username + " Seccessfully joined channel" + m.getRoomName());
-                    chatRoomPanel newChatChannel = new chatRoomPanel(this.getSelf(), m.getRoomName(),username,this);
+                    chatRoomPanel newChatChannel = new chatRoomPanel(this.getSelf(), m.getRoomName(), username, this);
                     rooms.put(m.getRoomName(), newChatChannel);
 
                     if (roomsIn == 0)
@@ -63,7 +64,7 @@ public class Client extends AbstractActor {
 //                    System.out.println(mgs.getContent());
 //                })
                 .match(Message_LeaveChannel.class, mgs -> {
-                    String roomToClose=mgs.getChannel();
+                    String roomToClose = mgs.getChannel();
                     rooms.remove(roomToClose);
                     roomsIn--;
                     window.closeChannel(roomToClose);
@@ -71,19 +72,23 @@ public class Client extends AbstractActor {
                 })
                 .match(Message_UpdateList.class, mgs -> {
                     System.out.println("Hello");
-                    chatRoomPanel chat=(chatRoomPanel) rooms.get(mgs.getRoomName());
+                    chatRoomPanel chat = (chatRoomPanel) rooms.get(mgs.getRoomName());
                     chat.clearList();
-                    List<String> userL=mgs.getUserList();
-                    for(int i=0;i<userL.size();i++){
+                    List<String> userL = mgs.getUserList();
+                    for (int i = 0; i < userL.size(); i++) {
                         chat.addTolist(userL.get(i));
                     }
 
                 })
 
                 .match(Message_ChangeTitle.class, msg -> {
-                    chatRoomPanel chat = (chatRoomPanel)rooms.get(msg.getRoomName());
+                    chatRoomPanel chat = (chatRoomPanel) rooms.get(msg.getRoomName());
                     chat.changeTitle(msg.getNewTitleName());
 
+                })
+                .match(Message_ChangeUserMode.class, msg ->
+                {
+                    this.UserType = msg.getMode();
                 })
                 .match(Message_UserInput.class, msg -> {
 
@@ -96,17 +101,17 @@ public class Client extends AbstractActor {
                             String details[] = theRest.split(" ", 2);
                             String toWhomToSend = details[0];
                             if (details.length > 1) {
-                                Message_PrivateMessage sen = new Message_PrivateMessage(details[1],msg.getRoomName(),msg.getUserName(),toWhomToSend);
+                                Message_PrivateMessage sen = new Message_PrivateMessage(details[1], msg.getRoomName(), msg.getUserName(), toWhomToSend);
                                 connectorActor.tell(sen, self());
                             }
                         } else if (type.equals("/leave")) {
-                            Message_LeaveChannel sen = new Message_LeaveChannel(username,msg.getRoomName(),
+                            Message_LeaveChannel sen = new Message_LeaveChannel(username, msg.getRoomName(),
                                     self());
                             connectorActor.tell(sen, self());
                         } else if (type.equals("/title")) {
                             String details[] = theRest.split(" ", 2);
                             String channelName = details[0];
-                            Message_PermissionToChangeTitle sen = new Message_PermissionToChangeTitle(channelName,msg.getUserName(),details[1]);
+                            Message_PermissionToChangeTitle sen = new Message_PermissionToChangeTitle(channelName, msg.getUserName(), details[1]);
                             connectorActor.tell(sen, self());
                         } else if (type.equals("/kick")) {
                             Message_KickUser sen = new Message_KickUser();
@@ -123,25 +128,34 @@ public class Client extends AbstractActor {
 //                            sen.banUser = ban[0];
 //                            connectorActor.tell(sen, self());
                         } else if (type.equals("/add")) {
-//                            Message_AddUserToChannel sen = new Message_AddUserToChannel();
-//                            sen.userName = username;
-//                            sen.roomNAme = roomName;
-//                            String res[] = theRest.split(" ", 3);
-//                            sen.addedUser = res[2];
-//                            sen.listType = res[1];
-//                            connectorActor.tell(sen, self());
-                        } else if (type.equals("/remove ")) {
-                            Message_RemoveUser sen = new Message_RemoveUser();
-                            sen.userName = username;
-                            sen.roomNAme = msg.getRoomName();
                             String res[] = theRest.split(" ", 3);
-                            sen.delUser = res[2];
-                            sen.listType = res[1];
+                            UserMode mode;
+                            if (res[1] == "v") {
+                                mode = UserMode.VOICE;
+                            } else {
+                                mode = UserMode.OPERATOR;
+                            }
+                            Message_AddUserToChannel sen = new Message_AddUserToChannel(res[0], msg.getUserName(),UserType, res[2], mode, false);
+                            connectorActor.tell(sen, self());
+                        } else if (type.equals("/remove ")) {
+//                            sen.userName = username;
+//                            sen.roomNAme = msg.getRoomName();
+                            String res[] = theRest.split(" ", 3);
+//                            sen.delUser = res[2];
+//                            sen.listType = res[1];
+
+                            UserMode mode;
+                            if (res[1] == "v") {
+                                mode = UserMode.USER;
+                            } else {
+                                mode = UserMode.VOICE;
+                            }
+
+                            Message_RemoveUser sen = new Message_RemoveUser(msg.getRoomName(), msg.getUserName(),this.UserType, res[2], mode);
                             connectorActor.tell(sen, self());
                         }
-                    }
-                    else{
-                        Message_PublicMessage sen = new Message_PublicMessage(username,msg.getRoomName(),msg.getText());
+                    } else {
+                        Message_PublicMessage sen = new Message_PublicMessage(username, msg.getRoomName(), msg.getText());
                         connectorActor.tell(sen, self());
                     }
 
