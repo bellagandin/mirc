@@ -6,7 +6,7 @@ import akka.actor.*;
  * Created by Bella on 5/24/2017.
  */
 public class ServerUserMainActor extends AbstractActor {
-
+    private ExtensionFunction helper = new ExtensionFunction();
 
 
     @Override
@@ -16,24 +16,22 @@ public class ServerUserMainActor extends AbstractActor {
         return receiveBuilder()
                 .match(Message_JoinClient.class, (Message_JoinClient m) -> {
                     //It creates child actor under: /User/Server/ServerUsersMain/"username"
-                    ActorSelection ActorChannelMain = getContext().actorSelection("/user/Server/ServerChannelMain");
-                    if (m.getActorClient() == null) {
+
+
+                    //find the userActor in exists
+                    ActorSelection sel = context().actorSelection("akka://HelloWorldSystem/user/Server/ServerUsersMain/" + m.getUsername());
+                    ActorRef res = helper.GetActorByName(sel);
+                    if (res == null) {
                         ActorRef child = this.getContext().actorOf(Props.create(ServerUserActor.class, getSender()), m.getUsername());
                         System.out.println("Creating new ServerUserActor for " + m.getUsername());
-                        m.setActorClient(getSender());
-
-
-                        System.out.println("send to channel message newClient");
-
-                        ActorChannelMain.tell(m, child);
-
+                        System.out.println("send to child message newClient");
+                        // ActorChannelMain.tell(m, child);
+                        child.tell(m, getSender());
                     } else {
-                        ActorChannelMain.tell(m, m.getActorClient());
+                        //ActorChannelMain.tell(m, res);
+                        res.tell(m, getSender());
                     }
 
-
-
-                    //child.tell(m, getSender());
                         }
                 ) .build();
     }

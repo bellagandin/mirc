@@ -16,15 +16,13 @@ public class ServerChannelMainActor extends AbstractActor {
     public Receive createReceive() {
         return receiveBuilder()
                 .match(Message_JoinClient.class, (Message_JoinClient m) -> {
-
-
-                    System.out.println("check if the channel exists: if exists add the user to the router. if not creates new router " + m.getChannel());
-                    ActorSelection sel = context().actorSelection("akka://HelloWorldSystem/user/Server/ServerChannelMain/" + m.getChannel());
+                    System.out.println("check if the channel exists: if exists add the user to the router. if not creates new router " + m.getRoomName());
+                    ActorSelection sel = context().actorSelection("akka://HelloWorldSystem/user/Server/ServerChannelMain/" + m.getRoomName());
                     ActorRef r = helper.GetActorByName(sel);
                     if (r == null) {
-                        System.out.println("there is no channel named:" + m.getChannel());
+                        System.out.println("there is no channel named:" + m.getRoomName());
                         System.out.println("Creating new Channel");
-                        r = getContext().actorOf(Props.create(ServerChannelActor.class, m.getChannel()), m.getChannel());
+                        r = getContext().actorOf(Props.create(ServerChannelActor.class, m.getRoomName()), m.getRoomName());
 
                     }
                     r.tell(m, getSender());

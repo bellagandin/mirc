@@ -14,9 +14,9 @@ public class Message_JoinApproval extends Message {
     private ArrayList<String> userList;
     private String roomTitle;
 
-    public Message_JoinApproval(String roomName, String userROle, ActorRef channelActorRef, ArrayList<String> userList, String roomTitle) {
+    public Message_JoinApproval(String roomName, ActorRef channelActorRef, ArrayList<String> userList, String roomTitle) {
         this.roomName = roomName;
-        this.userROle = userROle;
+        //this.userROle = userROle;
         this.channelActorRef = channelActorRef;
         this.userList = userList;
         this.roomTitle = roomTitle;
@@ -26,9 +26,9 @@ public class Message_JoinApproval extends Message {
         return roomName;
     }
 
-    public String getUserROle() {
-        return userROle;
-    }
+    // public String getUserROle() {
+//        return userROle;
+//    }
 
     public ActorRef getChannelActorRef() {
         return channelActorRef;

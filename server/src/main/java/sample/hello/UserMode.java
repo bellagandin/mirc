@@ -5,6 +5,6 @@ package sample.hello;
  */
 
 public enum UserMode {
-    USER, VOICE, OPERATOR, OWNER, OUT, BANNED
+    USER, VOICE, OPERATOR, OWNER, BANNED
 }
 
