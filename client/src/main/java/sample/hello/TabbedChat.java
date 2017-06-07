@@ -153,7 +153,8 @@ public class TabbedChat extends javax.swing.JFrame{
         String channel = roomNameInput.getText();
         if(client == null){
             isFirst=true;
-            client = system.actorOf(Props.create(Client.class, username, this), "ClientUserActor");}
+            client = system.actorOf(Props.create(Client.class, username, this), "ClientUserActor");
+            userNameInput.setEditable(false);}
         ActorSelection serv = system.actorSelection("akka.tcp://HelloWorldSystem@127.0.0.1:22/user/Server");
 
         Message_JoinClient joi=new Message_JoinClient(username, channel,isFirst);

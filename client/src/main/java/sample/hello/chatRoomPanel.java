@@ -29,7 +29,7 @@ public class chatRoomPanel  extends javax.swing.JPanel{
     private javax.swing.JTextArea messageInput;
     private javax.swing.JLabel roomTitle;
     private javax.swing.JButton sendBtn;
-    private javax.swing.JList<String> usersList;
+    public javax.swing.JList<String> usersList;
     // End of variables declaration
     public chatRoomPanel(ActorRef client,String roomName,String username,Client c) {
 
@@ -63,6 +63,7 @@ public class chatRoomPanel  extends javax.swing.JPanel{
 
         messageArea.setColumns(20);
         messageArea.setRows(5);
+        messageArea.setEditable(false);
         jScrollPane1.setViewportView(messageArea);
 
         sendBtn.setText("Send");
@@ -164,12 +165,13 @@ public class chatRoomPanel  extends javax.swing.JPanel{
         Message_UserInput msg = new Message_UserInput(username,roomName,messageInput.getText());
 
         client.tell(msg,null);
+        messageInput.setText("");
 
     }
 
     private void leaveBtnActionPerformed(java.awt.event.ActionEvent evt) {
         System.out.println(roomName);
-        Message_LeaveChannel lev=new Message_LeaveChannel(this.username,roomName,client);
+        Message_LeaveChannel lev=new Message_LeaveChannel(this.username,roomName,client,false);
         c.connectorActor.tell(lev,client);
 
 

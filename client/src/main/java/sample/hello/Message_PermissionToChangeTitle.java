@@ -3,7 +3,7 @@ package sample.hello;
 /**
  * Created by Bella on 6/2/2017.
  */
-public class Message_PermissionToChangeTitle extends  Message {
+public class Message_PermissionToChangeTitle extends Message {
     private String roomName;
     private String userName;
     private String newTitleName;

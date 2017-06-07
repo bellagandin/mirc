@@ -64,10 +64,21 @@ public class Client extends AbstractActor {
 //                    System.out.println(mgs.getContent());
 //                })
                 .match(Message_LeaveChannel.class, mgs -> {
+                    System.out.println("leave got Back");
                     String roomToClose = mgs.getChannel();
                     rooms.remove(roomToClose);
                     roomsIn--;
                     window.closeChannel(roomToClose);
+
+                })
+                .match(Message_gotKicked.class, mgs -> {
+                    System.out.println("got Kick Message from server");
+                    String text = mgs.getToKick()+" got kicked by "+mgs.getKicker();
+                    Message_PublicMessage kickAnounce=new Message_PublicMessage(mgs.getToKick(),mgs.getRoomName(),text);
+                    connectorActor.tell(kickAnounce,self());
+                    chatRoomPanel c=(chatRoomPanel) rooms.get(mgs.getRoomName());
+                    Message_LeaveChannel lev=new Message_LeaveChannel(mgs.getToKick(),mgs.getRoomName(),c.client,true);
+                    connectorActor.tell(lev,self());
 
                 })
                 .match(Message_UpdateList.class, mgs -> {
@@ -76,6 +87,10 @@ public class Client extends AbstractActor {
                     chat.clearList();
                     List<String> userL = mgs.getUserList();
                     for (int i = 0; i < userL.size(); i++) {
+                        String temp=userL.get(i);
+                        if(temp.charAt(0)=='@'){
+                            temp="<i>"+temp+"</i>";
+                        }
                         chat.addTolist(userL.get(i));
                     }
 
@@ -105,20 +120,19 @@ public class Client extends AbstractActor {
                                 connectorActor.tell(sen, self());
                             }
                         } else if (type.equals("/leave")) {
-                            Message_LeaveChannel sen = new Message_LeaveChannel(username, msg.getRoomName(),
-                                    self());
+                            Message_LeaveChannel sen = new Message_LeaveChannel(username,msg.getRoomName(),
+                                    self(),false);
                             connectorActor.tell(sen, self());
                         } else if (type.equals("/title")) {
                             String details[] = theRest.split(" ", 2);
                             String channelName = details[0];
                             Message_PermissionToChangeTitle sen = new Message_PermissionToChangeTitle(channelName, msg.getUserName(), details[1]);
+                            System.out.println("sending the server to change the title");
                             connectorActor.tell(sen, self());
                         } else if (type.equals("/kick")) {
-                            Message_KickUser sen = new Message_KickUser();
-                            sen.userName = username;
-                            sen.roomNAme = msg.getRoomName();
+                            System.out.println("Got kick message passing to server");
                             String kicked[] = theRest.split(" ", 2);
-                            sen.ToKick = kicked[0];
+                            Message_KickUser sen = new Message_KickUser(username,msg.getRoomName(),username,kicked[0],false);
                             connectorActor.tell(sen, self());
                         } else if (type.equals("/ban")) {
 //                            Message_banUser sen = new Message_banUser();
@@ -130,29 +144,29 @@ public class Client extends AbstractActor {
                         } else if (type.equals("/add")) {
                             String res[] = theRest.split(" ", 3);
                             UserMode mode;
-                            if (res[1] == "v") {
+                            if (res[1].equals ("v")) {
                                 mode = UserMode.VOICE;
+                                Message_PromoteToVoice sen=new Message_PromoteToVoice(res[2],res[0],mode);
+                                connectorActor.tell(sen,self());
                             } else {
                                 mode = UserMode.OPERATOR;
+                                Message_PromoteToOperator sen=new Message_PromoteToOperator(res[2],res[0],mode);
+                                connectorActor.tell(sen,self());
                             }
-                            Message_AddUserToChannel sen = new Message_AddUserToChannel(res[0], msg.getUserName(),UserType, res[2], mode, false);
-                            connectorActor.tell(sen, self());
-                        } else if (type.equals("/remove ")) {
-//                            sen.userName = username;
-//                            sen.roomNAme = msg.getRoomName();
+                            //Message_AddUserToChannel sen = new Message_AddUserToChannel(res[0], msg.getUserName(),UserType, res[2], mode, false);
+                            //connectorActor.tell(sen, self());
+                        } else if (type.equals("/remove")) {
                             String res[] = theRest.split(" ", 3);
-//                            sen.delUser = res[2];
-//                            sen.listType = res[1];
-
                             UserMode mode;
-                            if (res[1] == "v") {
-                                mode = UserMode.USER;
-                            } else {
+                            if (res[1].equals ("v")) {
                                 mode = UserMode.VOICE;
+                                Message_removeFromVoice sen=new Message_removeFromVoice(res[2],res[0],mode);
+                                connectorActor.tell(sen,self());
+                            } else {
+                                mode = UserMode.OPERATOR;
+                                Message_removeFromOp sen=new Message_removeFromOp(res[2],res[0],mode);
+                                connectorActor.tell(sen,self());
                             }
-
-                            Message_RemoveUser sen = new Message_RemoveUser(msg.getRoomName(), msg.getUserName(),this.UserType, res[2], mode);
-                            connectorActor.tell(sen, self());
                         }
                     } else {
                         Message_PublicMessage sen = new Message_PublicMessage(username, msg.getRoomName(), msg.getText());

@@ -14,7 +14,7 @@ public class Message_PrivateMessage extends Message {
     SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
     private String timeStamp = dateFormat.format(new Date());
 
-    public Message_PrivateMessage(String text, String roomName, String sender,String userName) {
+    public Message_PrivateMessage(String text, String roomName, String sender, String userName) {
         this.text = text;
         this.roomName = roomName;
         this.specificUserName = userName;

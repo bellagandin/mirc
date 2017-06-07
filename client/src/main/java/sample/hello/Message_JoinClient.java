@@ -10,29 +10,28 @@ import java.util.Date;
  */
 
 
-public class Message_JoinClient extends  Message {
+public class Message_JoinClient extends Message {
     private String username;
-    private String channel;
+    private String roomName;
     private String timeStamp;
     private ActorRef client;
     private boolean isFirst;
 
 
-    Message_JoinClient(String username, String channel,boolean isFirst) {
+    Message_JoinClient(String username, String channel, boolean isFirst) {
         this.username = username;
-        this.channel = channel;
+        this.roomName = channel;
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
         this.timeStamp = dateFormat.format(new Date());
-        this.isFirst=isFirst;
-        this.client=null;
+        this.isFirst = isFirst;
     }
 
     public String getUsername() {
         return this.username;
     }
 
-    public String getChannel() {
-        return this.channel;
+    public String getRoomName() {
+        return this.roomName;
     }
 
     public String getTimeStamp() {
@@ -48,7 +47,9 @@ public class Message_JoinClient extends  Message {
         return this.client;
     }
 
-    public boolean getIsFirst(){ return  this.isFirst;}
+    public boolean getIsFirst() {
+        return this.isFirst;
+    }
 
 
 }

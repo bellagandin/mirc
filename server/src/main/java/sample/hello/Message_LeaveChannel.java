@@ -9,12 +9,20 @@ import java.util.Date;
  * Created by Bella on 5/31/2017.
  */
 public class Message_LeaveChannel extends Message {
-    public Message_LeaveChannel(String username, String channel,ActorRef client) {
+    public boolean isKicked() {
+        return kicked;
+    }
+
+    private final boolean kicked;
+
+    public Message_LeaveChannel(String username, String channel, ActorRef client, boolean kicked) {
         this.username = username;
         this.channel = channel;
         this.dateFormat = dateFormat;
         this.timeStamp = timeStamp;
         this.client = client;
+        this.kicked=kicked;
+
     }
 
     public String getUsername() {
