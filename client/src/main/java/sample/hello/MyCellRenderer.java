@@ -13,6 +13,7 @@ class MyCellRenderer extends DefaultListCellRenderer {
 
         if (((String) value).charAt(0)=='@') {
             c.setFont(c.getFont().deriveFont(Font.ITALIC));
+            c.setFont(c.getFont().deriveFont(Font.BOLD));
         } else {
             c.setFont(c.getFont().deriveFont(Font.PLAIN));
         }

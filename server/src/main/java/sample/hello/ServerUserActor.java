@@ -12,6 +12,7 @@ public class ServerUserActor extends AbstractActor {
     private ActorRef connectdClient;
     private ExtensionFunction helper;
 
+
     public ServerUserActor(ActorRef act) {
         connectdClient = act;
         helper = new ExtensionFunction();
@@ -139,6 +140,7 @@ public class ServerUserActor extends AbstractActor {
                     connectdClient.tell(m, self());
 
                 })
+
                 .match(Message_Disband.class, msg -> {
                     System.out.println("UserActor: Got message to kick to client <Message_disband> :" + msg);
                     ActorRef ref = (ActorRef) table.get(msg.getRoomName());

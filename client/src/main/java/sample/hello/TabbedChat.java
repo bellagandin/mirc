@@ -1,9 +1,6 @@
 package sample.hello;
 
-import akka.actor.ActorRef;
-import akka.actor.ActorSelection;
-import akka.actor.ActorSystem;
-import akka.actor.Props;
+import akka.actor.*;
 
 import javax.swing.*;
 import java.util.HashMap;
@@ -19,6 +16,7 @@ public class TabbedChat extends javax.swing.JFrame{
      */
     ActorSystem system;
     ActorRef client=null;
+    public Client c=null;
     Map<String,JPanel> rooms;
     ActorRef ServerActor=null;
     // Variables declaration - do not modify
@@ -83,6 +81,18 @@ public class TabbedChat extends javax.swing.JFrame{
         jLabel3.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel3.setText("Welcome To Our MIIRC");
+
+
+        this.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+                c.dispatchAll();
+                client.tell(PoisonPill.getInstance(),client);
+            }
+        });
+
+
+
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -154,6 +164,7 @@ public class TabbedChat extends javax.swing.JFrame{
         if(client == null){
             isFirst=true;
             client = system.actorOf(Props.create(Client.class, username, this), "ClientUserActor");
+
             userNameInput.setEditable(false);}
         ActorSelection serv = system.actorSelection("akka.tcp://HelloWorldSystem@127.0.0.1:22/user/Server");
 

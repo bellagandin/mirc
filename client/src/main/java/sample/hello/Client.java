@@ -2,9 +2,11 @@ package sample.hello;
 
 import akka.actor.AbstractActor;
 import akka.actor.ActorRef;
+import akka.actor.PoisonPill;
 
 import javax.swing.*;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -24,6 +26,16 @@ public class Client extends AbstractActor {
         username = name;
         rooms = new HashMap<String, JPanel>();
         roomsIn = 0;
+        ch.c=this;
+    }
+
+    public void dispatchAll() {
+        Iterator it = rooms.entrySet().iterator();
+        while (it.hasNext()) {
+            Map.Entry pair = (Map.Entry)it.next();
+            ((chatRoomPanel) pair.getValue()).leaveBtnActionPerformed(null);
+        }
+        connectorActor.tell(PoisonPill.getInstance(), self());
     }
 
 

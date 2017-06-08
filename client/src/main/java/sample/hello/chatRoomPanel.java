@@ -82,6 +82,7 @@ public class chatRoomPanel  extends javax.swing.JPanel{
 
         usersList.setModel(model);
         jScrollPane2.setViewportView(usersList);
+        usersList.setCellRenderer(new MyCellRenderer());
 
         roomTitle.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         roomTitle.setText("Welcome To: Room Name");
@@ -144,6 +145,7 @@ public class chatRoomPanel  extends javax.swing.JPanel{
         );
 
         roomTitle.getAccessibleContext().setAccessibleName("Welcoome to : RoomName");
+
     }// </editor-fold>
 
     public void printInMessageArea(String msg){
@@ -156,7 +158,7 @@ public class chatRoomPanel  extends javax.swing.JPanel{
     }
     public void changeTitle(String newTitle){
         roomName=roomName;
-        roomTitle.setText(newTitle);
+        roomTitle.setText("room title is "+newTitle+" Uer in as "+username);
 
     }
 
@@ -170,7 +172,7 @@ public class chatRoomPanel  extends javax.swing.JPanel{
 
     }
 
-    private void leaveBtnActionPerformed(java.awt.event.ActionEvent evt) {
+    public void leaveBtnActionPerformed(java.awt.event.ActionEvent evt) {
         System.out.println(roomName);
         Message_LeaveChannel lev=new Message_LeaveChannel(this.username,roomName,client,false);
         c.connectorActor.tell(lev,client);
