@@ -58,14 +58,12 @@ public class Client extends AbstractActor {
 
 
                 })
-//                .match(Message_Broadcast.class, mgs -> {
-//                    //chatGui.renderMessage(mgs.content);
-//                    System.out.println(mgs.getContent());
-//                    System.out.println(mgs.getContent());
-//                })
+
                 .match(Message_LeaveChannel.class, mgs -> {
                     System.out.println("leave got Back");
-                    String roomToClose = mgs.getChannel();
+                    chatRoomPanel chat = (chatRoomPanel) rooms.get(mgs.getRoomName());
+                    chat.clearList();
+                    String roomToClose = mgs.getRoomName();
                     rooms.remove(roomToClose);
                     roomsIn--;
                     window.closeChannel(roomToClose);
@@ -95,7 +93,14 @@ public class Client extends AbstractActor {
                     }
 
                 })
-
+                .match(Message_Error.class,msg->
+                {
+                    System.out.println(msg.getText());
+                    chatRoomPanel chat = (chatRoomPanel) rooms.get(msg.getRoomName());
+                    if (chat != null) {
+                        chat.printInMessageArea(msg.getText());
+                    }
+                })
                 .match(Message_ChangeTitle.class, msg -> {
                     chatRoomPanel chat = (chatRoomPanel) rooms.get(msg.getRoomName());
                     chat.changeTitle(msg.getNewTitleName());
@@ -122,6 +127,8 @@ public class Client extends AbstractActor {
                         } else if (type.equals("/leave")) {
                             Message_LeaveChannel sen = new Message_LeaveChannel(username,msg.getRoomName(),
                                     self(),false);
+                            chatRoomPanel chat = (chatRoomPanel) rooms.get(msg.getRoomName());
+                            chat.clearList();
                             connectorActor.tell(sen, self());
                         } else if (type.equals("/title")) {
                             String details[] = theRest.split(" ", 2);
@@ -135,12 +142,12 @@ public class Client extends AbstractActor {
                             Message_KickUser sen = new Message_KickUser(username,msg.getRoomName(),username,kicked[0],false);
                             connectorActor.tell(sen, self());
                         } else if (type.equals("/ban")) {
-//                            Message_banUser sen = new Message_banUser();
-//                            sen.userName = username;
-//                            sen.roomNAme = roomName;
-//                            String ban[] = theRest.split(" ", 2);
-//                            sen.banUser = ban[0];
-//                            connectorActor.tell(sen, self());
+                            System.out.println("Got ban message passing to server");
+                            String kicked[] = theRest.split(" ", 2);
+                            Message_AddToBandList sendMsg = new Message_AddToBandList(kicked[0],msg.getRoomName());
+                            connectorActor.tell(sendMsg, self());
+                            Message_KickUser sen = new Message_KickUser(username,msg.getRoomName(),username,kicked[0],false);
+                            connectorActor.tell(sen, self());
                         } else if (type.equals("/add")) {
                             String res[] = theRest.split(" ", 3);
                             UserMode mode;
@@ -168,11 +175,18 @@ public class Client extends AbstractActor {
                                 connectorActor.tell(sen,self());
                             }
                         }
-                    } else {
-                        Message_PublicMessage sen = new Message_PublicMessage(username, msg.getRoomName(), msg.getText());
-                        connectorActor.tell(sen, self());
-                    }
 
+                    } else {
+                        if (type.equals("/disband")) {
+                            chatRoomPanel chat = (chatRoomPanel) rooms.get(msg.getRoomName());
+                            chat.clearList();
+                            Message_Disband sen = new Message_Disband(msg.getUserName(), msg.getRoomName());
+                            connectorActor.tell(sen, self());
+                        } else {
+                            Message_PublicMessage sen = new Message_PublicMessage(username, msg.getRoomName(), msg.getText());
+                            connectorActor.tell(sen, self());
+                        }
+                    }
                 })
 
                 .build();

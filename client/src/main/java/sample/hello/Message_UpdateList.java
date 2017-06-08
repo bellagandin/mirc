@@ -6,7 +6,6 @@ import java.util.List;
  * Created by Bella on 6/2/2017.
  */
 public class Message_UpdateList extends Message {
-
     private String roomName;
     private List<String> userList;
 
@@ -16,7 +15,10 @@ public class Message_UpdateList extends Message {
     }
 
 
-
+    @Override
+    public String getUserName() {
+        return null;
+    }
 
     public String getRoomName() {
         return roomName;

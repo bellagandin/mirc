@@ -6,14 +6,14 @@ import java.util.Date;
 /**
  * Created by Bella on 6/2/2017.
  */
-public class Message_KickUser extends  Message{
+public class Message_KickUser extends Message {
     private String kicker;
 
     public String getKicker() {
         return kicker;
     }
 
-    public String getRoomNAme() {
+    public String getRoomName() {
         return roomNAme;
     }
 

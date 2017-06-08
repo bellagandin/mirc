@@ -150,6 +150,7 @@ public class chatRoomPanel  extends javax.swing.JPanel{
 
         messageArea.append(msg+'\n');
     }
+
     public void addTolist(String s){
         model.addElement(s);
     }

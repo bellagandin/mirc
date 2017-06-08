@@ -26,7 +26,7 @@ public class Message_JoinClient extends Message {
         this.isFirst = isFirst;
     }
 
-    public String getUsername() {
+    public String getUserName() {
         return this.username;
     }
 
@@ -42,14 +42,14 @@ public class Message_JoinClient extends Message {
     public void setActorClient(ActorRef actor) {
         this.client = actor;
     }
-
-    public ActorRef getActorClient() {
-        return this.client;
-    }
-
-    public boolean getIsFirst() {
-        return this.isFirst;
-    }
+//
+//    public ActorRef getActorClient() {
+//        return this.client;
+//    }
+//
+//    public boolean getIsFirst() {
+//        return this.isFirst;
+//    }
 
 
 }

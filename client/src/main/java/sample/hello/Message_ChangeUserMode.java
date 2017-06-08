@@ -19,11 +19,12 @@ public class Message_ChangeUserMode extends Message {
         return mode;
     }
 
-    public String getRootName() {
+    public String getRoomName() {
         return rootName;
     }
 
     public String getUserName() {
         return userName;
     }
+
 }

@@ -22,6 +22,11 @@ public class Message_JoinApproval extends Message {
         this.roomTitle = roomTitle;
     }
 
+    @Override
+    public String getUserName() {
+        return null;
+    }
+
     public String getRoomName() {
         return roomName;
     }
