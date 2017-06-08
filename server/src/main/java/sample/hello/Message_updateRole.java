@@ -22,7 +22,7 @@ public class Message_updateRole extends Message {
         return userName;
     }
 
-    public String getRoomNAme() {
+    public String getRoomName() {
         return roomNAme;
     }
 }

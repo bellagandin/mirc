@@ -25,11 +25,11 @@ public class Message_LeaveChannel extends Message {
 
     }
 
-    public String getUsername() {
+    public String getUserName() {
         return username;
     }
 
-    public String getChannel() {
+    public String getRoomName() {
         return channel;
     }
 

@@ -27,6 +27,11 @@ public class Message_gotKicked extends Message {
         this.kicker = kicker;
     }
 
+    @Override
+    public String getUserName() {
+        return kicker;
+    }
+
     public String getRoomName() {
         return roomName;
     }

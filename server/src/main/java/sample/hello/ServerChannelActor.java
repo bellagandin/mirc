@@ -36,11 +36,11 @@ public class ServerChannelActor extends AbstractActor {
                     String userMode;
                     if (router.routees().isEmpty()) {
                         System.out.println("The room is empty.");
-                        type = new Message_ChangeUserMode(m.getUsername(), m.getUsername(), UserMode.OWNER);
-                        userMode = "@" + m.getUsername();
+                        type = new Message_ChangeUserMode(m.getUserName(), m.getUserName(), UserMode.OWNER);
+                        userMode = "@" + m.getUserName();
                     } else {
-                        type = new Message_ChangeUserMode(m.getUsername(), m.getUsername(), UserMode.USER);
-                        userMode = m.getUsername();
+                        type = new Message_ChangeUserMode(m.getUserName(), m.getUserName(), UserMode.USER);
+                        userMode = m.getUserName();
                     }
                     getSender().tell(type, self());
                     System.out.println("Sending to UserChannel change in UserMode.");
@@ -56,21 +56,20 @@ public class ServerChannelActor extends AbstractActor {
                     router.route(msg, self());
 
                     //Sends all the Users the join message
-                    String message = "[" + m.getTimeStamp() + "]*** joins: " + m.getUsername();
+                    String message = "[" + m.getTimeStamp() + "]*** joins: " + m.getUserName();
                     System.out.println(message);
-                    Message_ReceiveMessage rec = new Message_ReceiveMessage(roomName, m.getUsername(), "", message);
+                    Message_ReceiveMessage rec = new Message_ReceiveMessage(roomName, m.getUserName(), "", message);
                     router.route(rec, self());
                 })
-
                 .match(Message_LeaveChannel.class, m -> {
-                    System.out.println("Channel Got Leave message from " + m.getUsername());
+                    System.out.println("Channel Got Leave message from " + m.getUserName());
                     router = router.removeRoutee(getSender());
 
                         for(int i=0;i<users.size();i++){
                             String temp=users.get(i);
                             if(users.get(i).charAt(0)=='@'||users.get(i).charAt(0)=='+' )
                                 temp=temp.substring(1);
-                            if(temp.equals(m.getUsername())){
+                            if (temp.equals(m.getUserName())) {
                                 users.remove(i);
                                 break;
                             }
@@ -103,37 +102,35 @@ public class ServerChannelActor extends AbstractActor {
                     //Message_PermissionToChangeTitle.
                 })
                 .match(Message_PromoteToOperator.class, msg -> {
-                    System.out.println("ServerActorChannel Got Message_PromoteToOperator to sent to promote :" + msg.getUsername());
+                    System.out.println("ServerActorChannel Got Message_PromoteToOperator to sent to promote :" + msg.getUserName());
 
                     for(int i=0;i<users.size();i++){
                         String temp=users.get(i);
                         if(users.get(i).charAt(0)=='@'||users.get(i).charAt(0)=='+' )
                             temp=temp.substring(1);
-                        if(temp.equals(msg.getUsername())){
+                        if (temp.equals(msg.getUserName())) {
                             users.set(i,"@"+temp);
                             break;
                         }
                     }
 
-                    Message_UpdateList changeLst=new Message_UpdateList(msg.getRoomname(),users);
+                    Message_UpdateList changeLst = new Message_UpdateList(msg.getRoomName(), users);
                     router.route(changeLst,getSender());
-
-
 
                 })
                 .match(Message_PromoteToVoice.class, msg -> {
-                    System.out.println("ServerActorChannel Got Message_PromoteToVoice to sent to promote :" + msg.getUsername());
+                    System.out.println("ServerActorChannel Got Message_PromoteToVoice to sent to promote :" + msg.getUserName());
                     for(int i=0;i<users.size();i++){
                         String temp=users.get(i);
                         if(users.get(i).charAt(0)=='@'||users.get(i).charAt(0)=='+' )
                             temp=temp.substring(1);
-                        if(temp.equals(msg.getUsername())){
+                        if (temp.equals(msg.getUserName())) {
                             users.set(i,"+"+temp);
                             break;
                         }
                     }
 
-                    Message_UpdateList changeLst=new Message_UpdateList(msg.getRoomname(),users);
+                    Message_UpdateList changeLst = new Message_UpdateList(msg.getRoomName(), users);
                     router.route(changeLst,self());
                 })
                 .match(Message_ChangeUserMode.class, msg -> {
@@ -154,27 +151,33 @@ public class ServerChannelActor extends AbstractActor {
                         }
                     }
 
-                    Message_UpdateList changeLst=new Message_UpdateList(msg.getRootName(),users);
+                    Message_UpdateList changeLst = new Message_UpdateList(msg.getRoomName(), users);
                     router.route(changeLst,self());
 
                 })
-
                 .match(Message_removeFromOp.class, msg -> {
-                    System.out.println("ServerActorChannel Got Message_removeFromVoice to sent to promote :" + msg.getUsername());
+                    System.out.println("ServerActorChannel Got Message_removeFromVoice to sent to promote :" + msg.getUserName());
                     for(int i=0;i<users.size();i++){
                         String temp=users.get(i);
                         if(users.get(i).charAt(0)=='@'||users.get(i).charAt(0)=='+' )
                             temp=temp.substring(1);
-                        if(temp.equals(msg.getUsername())){
+                        if (temp.equals(msg.getUserName())) {
                             users.set(i,temp.substring(1));
                             break;
                         }
                     }
 
-                    Message_UpdateList changeLst=new Message_UpdateList(msg.getRoomname(),users);
+                    Message_UpdateList changeLst = new Message_UpdateList(msg.getRoomName(), users);
                     router.route(changeLst,self());
                 })
-
+                .match(Message_Disband.class, msg -> {
+                    System.out.println("ChannelActor : Got message to sent to client <Message_disband> :" + msg);
+                    Message_gotKicked handle = new Message_gotKicked(msg.getUserName(),
+                            msg.getRoomName(), "");
+                    users.clear();
+                    router.route(handle, getSender());
+                })
+                .match(Message_ReceiveMessage.class, msg -> router.route(msg, getSender()))
                 .build();
     }
 

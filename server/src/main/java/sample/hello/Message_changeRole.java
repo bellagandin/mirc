@@ -16,15 +16,17 @@ public class Message_changeRole extends Message {
 
     }
 
-    public String getUsername() {
+    public String getUserName() {
         return username;
     }
 
-    public String getRoomname() {
+    public String getRoomName() {
         return Roomname;
     }
 
     public UserMode getChangeTo() {
         return changeTo;
     }
+
+
 }

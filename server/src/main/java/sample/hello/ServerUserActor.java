@@ -22,26 +22,24 @@ public class ServerUserActor extends AbstractActor {
     public Receive createReceive() {
         return receiveBuilder()
                 .match(Message_JoinClient.class, (Message_JoinClient m) -> {
-                    System.out.println("ServerUserActor: Message_JoinClient: Got a message from UserMainActor from " + m.getUsername());
-                    String actorName = m.getUsername() + "&" + m.getRoomName();
-
-
-                       ActorRef userChannelActor = getContext().actorOf(Props.create(ServerUserChannelActor.class, getSender(), self()), actorName);
-                       System.out.println("ServerUserActor: Message_JoinClient: Done creating");
-                       table.put(m.getRoomName(), userChannelActor);
-                       System.out.println("ServerUserActor: Message_JoinClient: Done putting");
-                       userChannelActor.tell(m, self());
+                    System.out.println("ServerUserActor: Message_JoinClient: Got a message from UserMainActor from " + m.getUserName());
+                    String actorName = m.getUserName() + "&" + m.getRoomName();
+                    ActorRef userChannelActor = getContext().actorOf(Props.create(ServerUserChannelActor.class, getSender(), self()), actorName);
+                    System.out.println("ServerUserActor: Message_JoinClient: Done creating");
+                    table.put(m.getRoomName(), userChannelActor);
+                    System.out.println("ServerUserActor: Message_JoinClient: Done putting");
+                    userChannelActor.tell(m, self());
 
 
                     //// sending the Client his type
-                    //Message_ChangeUserMode userMode = new Message_ChangeUserMode(m.getUsername(), UserMode.OWNER);
+                    //Message_ChangeUserMode userMode = new Message_ChangeUserMode(m.getUserName(), UserMode.OWNER);
                     //connectdClient.tell(userMode, self());
 
                 })
                 .match(Message_LeaveChannel.class, msg -> {
-                    System.out.println("UserActor : Message_LeaveChannel: Got leave message from " + msg.getUsername());
-                    ActorRef ref = (ActorRef) table.get(msg.getChannel());
-                    table.remove(msg.getChannel());
+                    System.out.println("UserActor : Message_LeaveChannel: Got leave message from " + msg.getUserName());
+                    ActorRef ref = (ActorRef) table.get(msg.getRoomName());
+                    table.remove(msg.getRoomName());
                     ref.tell(msg, self());
                 })
                 //receive from the Channel
@@ -52,7 +50,7 @@ public class ServerUserActor extends AbstractActor {
                 })
                 .match(Message_changeRole.class, msg -> {
                     System.out.println("UserActor :Message_changeRole :Got message to sent to client :" + msg);
-                    ActorRef ref = (ActorRef) table.get(msg.getRoomname());
+                    ActorRef ref = (ActorRef) table.get(msg.getRoomName());
                     ref.tell(msg, self());
                 })
                 .match(Message_removeOp.class, msg -> {
@@ -67,7 +65,7 @@ public class ServerUserActor extends AbstractActor {
                 })
                 .match(Message_changeRole.class, msg -> {
                     System.out.println("UserActor :Message_changeRole :Got message to sent to client :" + msg);
-                    ActorRef ref = (ActorRef) table.get(msg.getRoomname());
+                    ActorRef ref = (ActorRef) table.get(msg.getRoomName());
                     ref.tell(msg, self());
                 })
                 .match(Message_CloseChannel.class, msg -> {
@@ -91,11 +89,10 @@ public class ServerUserActor extends AbstractActor {
 
                 })
                 .match(Message_updateRole.class, msg -> {
-                    System.out.println("Got message to sent to client <Message_PublicMessage> :" + msg);
-                    ActorRef ref = (ActorRef) table.get(msg.getRoomNAme());
+                    System.out.println("Got message to sent to client <Message_updateRole> :" + msg);
+                    ActorRef ref = (ActorRef) table.get(msg.getRoomName());
                     ref.tell(msg, self());
                 })
-
                 .match(Message_PermissionToChangeTitle.class, msg -> {
                     System.out.println("Got message to sent to client <Message_PermissionToChangeTitle> :" + msg);
 
@@ -120,34 +117,32 @@ public class ServerUserActor extends AbstractActor {
                 .match(Message_KickUser.class, msg -> {
 
                     System.out.println("UserActor: Got message to kick to client <Message_kickuser> :" + msg);
-                    ActorRef ref = (ActorRef) table.get(msg.getRoomNAme());
+                    ActorRef ref = (ActorRef) table.get(msg.getRoomName());
                     ref.tell(msg, self());
                 })
-
-//                .match(Message_AddUserToChannel.class, msg -> {
-//                    System.out.println("UserActor: Got message to sent to client <Message_AddUserToChannel> :" + msg);
-//                    ActorRef ref = (ActorRef)table.get(msg.getRoomName());
-//                    ref.tell(msg, self());
-//
-//                })
                 .match(Message_ChangeUserMode.class, msg -> {
                     System.out.println("UserActor: Got change userMode message to sent to client <Message_ChangeUserMode> :" + msg);
-                    ActorRef ref = (ActorRef) table.get(msg.getRootName());
+                    ActorRef ref = (ActorRef) table.get(msg.getRoomName());
                     if (ref != null) {
                         ref.tell(msg, self());
                     }
                 })
-//                .match(Message_RemoveUser.class, msg -> {
-//                    System.out.println("Got message to sent to client <Message_RemoveUser> :" + msg);
-//                    Object obj = table.get(msg.getRoomName());
-//                    //if (obj != null && (obj !=UserMode.USER|| obj!=UserMode.VOICE) ){
-//                    connectdClient.tell(msg, self());
-//                    //  }
-//                })
+                .match(Message_AddToBandList.class, msg -> {
+                    System.out.println("UserActor: Message_AddToBandList : Got change userMode message to sent to client <Message_ChangeUserMode> :" + msg);
+                    ActorRef ref = (ActorRef) table.get(msg.getRoomName());
+                    if (ref != null) {
+                        ref.tell(msg, self());
+                    }
+                })
                 .match(Message_ReceiveMessage.class, m -> {
                     System.out.println(m);
                     connectdClient.tell(m, self());
 
+                })
+                .match(Message_Disband.class, msg -> {
+                    System.out.println("UserActor: Got message to kick to client <Message_disband> :" + msg);
+                    ActorRef ref = (ActorRef) table.get(msg.getRoomName());
+                    ref.tell(msg, self());
                 })
                 .build();
     }

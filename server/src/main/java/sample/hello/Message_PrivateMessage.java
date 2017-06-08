@@ -38,7 +38,7 @@ public class Message_PrivateMessage extends Message {
         return specificUserName;
     }
 
-    public String getSender() {
+    public String getUserName() {
         return sender;
     }
 }

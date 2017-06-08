@@ -19,11 +19,11 @@ public class ServerUserMainActor extends AbstractActor {
 
 
                     //find the userActor in exists
-                    ActorSelection sel = context().actorSelection("akka://HelloWorldSystem/user/Server/ServerUsersMain/" + m.getUsername());
+                    ActorSelection sel = context().actorSelection("akka://HelloWorldSystem/user/Server/ServerUsersMain/" + m.getUserName());
                     ActorRef res = helper.GetActorByName(sel);
                     if (res == null) {
-                        ActorRef child = this.getContext().actorOf(Props.create(ServerUserActor.class, getSender()), m.getUsername());
-                        System.out.println("Creating new ServerUserActor for " + m.getUsername());
+                        ActorRef child = this.getContext().actorOf(Props.create(ServerUserActor.class, getSender()), m.getUserName());
+                        System.out.println("Creating new ServerUserActor for " + m.getUserName());
                         System.out.println("send to child message newClient");
                         // ActorChannelMain.tell(m, child);
                         child.tell(m, getSender());

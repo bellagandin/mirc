@@ -22,6 +22,11 @@ public class Message_ReceiveMessage extends Message {
         this.timeStamp = dateFormat.format(new Date());
     }
 
+    @Override
+    public String getUserName() {
+        return null;
+    }
+
     public String getRoomName() {
         return roomName;
     }

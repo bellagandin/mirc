@@ -13,7 +13,7 @@ public class Message_KickUser extends  Message{
         return kicker;
     }
 
-    public String getRoomNAme() {
+    public String getRoomName() {
         return roomNAme;
     }
 
