@@ -174,13 +174,14 @@ public class chatRoomPanel  extends javax.swing.JPanel{
 
     public void leaveBtnActionPerformed(java.awt.event.ActionEvent evt) {
         System.out.println(roomName);
-        Message_LeaveChannel lev=new Message_LeaveChannel(this.username,roomName,client,false);
+        Message_LeaveChannel lev=new Message_LeaveChannel(this.username,roomName,client,false,false);
         c.connectorActor.tell(lev,client);
 
-
-
-
-
+    }
+    public void leaveAll() {
+        System.out.println(roomName);
+        Message_LeaveChannel lev=new Message_LeaveChannel(this.username,roomName,client,false,true);
+        c.connectorActor.tell(lev,client);
 
     }
 

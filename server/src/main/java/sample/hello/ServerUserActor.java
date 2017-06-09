@@ -1,14 +1,19 @@
 package sample.hello;
 
-import akka.actor.*;
+import akka.actor.AbstractActor;
+import akka.actor.ActorRef;
+import akka.actor.PoisonPill;
+import akka.actor.Props;
 
-import java.util.Hashtable;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Created by Bella on 5/26/2017.
  */
 public class ServerUserActor extends AbstractActor {
-    private Hashtable table = new Hashtable();
+    private ConcurrentHashMap table = new ConcurrentHashMap();
     private ActorRef connectdClient;
     private ExtensionFunction helper;
 
@@ -37,12 +42,28 @@ public class ServerUserActor extends AbstractActor {
                     //connectdClient.tell(userMode, self());
 
                 })
+                .match(Message_dispatch.class, msg -> {
+                    self().tell(PoisonPill.getInstance(),self());
+                    System.out.println("UserActor : Message_dispatch: Got dispatch message from " + msg.getUserName());
+                    Iterator it = table.entrySet().iterator();
+                    while (it.hasNext()) {
+                        Map.Entry pair = (Map.Entry)it.next();
+                        Message_dispatch ds=new Message_dispatch(msg.getUserName(),(String)pair.getKey(),
+                                self(),false,true);
+                        System.out.println(pair.getKey() + " = " + pair.getValue());
+                        ActorRef ref = (ActorRef) pair.getValue();
+                        table.remove((String)pair.getKey());
+                        ref.tell(ds, self());
+                    }
+
+                })
                 .match(Message_LeaveChannel.class, msg -> {
                     System.out.println("UserActor : Message_LeaveChannel: Got leave message from " + msg.getUserName());
                     ActorRef ref = (ActorRef) table.get(msg.getRoomName());
                     table.remove(msg.getRoomName());
                     ref.tell(msg, self());
                 })
+
                 //receive from the Channel
                 .match(Message_JoinApproval.class, msg -> {
                     System.out.println("UserActor :Message_JoinApproval :Got message to sent to client :" + msg);

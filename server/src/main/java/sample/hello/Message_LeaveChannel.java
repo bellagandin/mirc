@@ -15,13 +15,16 @@ public class Message_LeaveChannel extends Message {
 
     private final boolean kicked;
 
-    public Message_LeaveChannel(String username, String channel, ActorRef client, boolean kicked) {
+    public Message_LeaveChannel(String username, String channel, ActorRef client,
+                                boolean kicked,boolean leaveALL) {
         this.username = username;
         this.channel = channel;
         this.dateFormat = dateFormat;
         this.timeStamp = timeStamp;
         this.client = client;
         this.kicked=kicked;
+        this.leaveALL=leaveALL;
+
 
     }
 
@@ -50,6 +53,12 @@ public class Message_LeaveChannel extends Message {
     private SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
     private String timeStamp = dateFormat.format(new Date());
     private ActorRef client;
+
+    public boolean isLeaveALL() {
+        return leaveALL;
+    }
+
+    private boolean leaveALL;
 
 
 }

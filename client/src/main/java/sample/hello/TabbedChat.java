@@ -81,13 +81,34 @@ public class TabbedChat extends javax.swing.JFrame{
         jLabel3.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel3.setText("Welcome To Our MIIRC");
+        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 
 
         this.addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
             public void windowClosing(java.awt.event.WindowEvent windowEvent) {
-                c.dispatchAll();
-                client.tell(PoisonPill.getInstance(),client);
+                if(c!=null && c.rooms.size()>0){
+                    String[] options = {"OK"};
+                    JPanel panel = new JPanel();
+                    JLabel lbl = new JLabel("Can't Exit Please leave all rooms you are" +
+                            " currentley in ");
+                    panel.add(lbl);
+                    int selectedOption = JOptionPane.showOptionDialog(null, panel, "Exit Error!", JOptionPane.NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options , options[0]);
+
+                    if(selectedOption == 0)
+                    {
+
+                    }
+
+                }
+                else if(JOptionPane.showConfirmDialog(jTabbedPane1,
+                        "Are you sure to close this window?", "Really Closing?",
+                        JOptionPane.YES_NO_OPTION,
+                        JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION){
+                        c.connectorActor.tell(PoisonPill.getInstance(),client);
+                        client.tell(PoisonPill.getInstance(),client);
+                        System.exit(0);
+                }
             }
         });
 

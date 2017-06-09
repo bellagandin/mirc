@@ -33,15 +33,21 @@ public class ServerUserChannelActor extends AbstractActor {
                     Mode=msg.getMode();
                     ChangeMode(msg);
                 })
+
                 .match(Message_JoinClient.class, (Message_JoinClient m) -> {
 
                     JoinMessage(m);
+
+                })
+                .match(Message_dispatch.class, msg -> {
+                    dispatch(msg);
 
                 })
                 .match(Message_LeaveChannel.class, msg -> {
                     LeaveMessage(msg);
 
                 })
+
                 .match(Message_JoinApproval.class, msg -> {
                     System.out.println("Message_JoinApproval: Got message to sent to client :" + msg);
                     //ActorSelection channels = getContext().actorSelection("/user/Server/ServerChannelMain");
@@ -137,6 +143,10 @@ public class ServerUserChannelActor extends AbstractActor {
                         })
                         .match(Message_removeVoice.class,m -> {
                             downgradeUser(m,UserMode.VOICE);
+
+                        })
+                        .match(Message_dispatch.class, msg -> {
+                            dispatch(msg);
 
                         })
                         .match(Message_updateRole.class, msg -> {
@@ -237,6 +247,10 @@ public class ServerUserChannelActor extends AbstractActor {
 
 
                         })
+                        .match(Message_dispatch.class, msg -> {
+                            dispatch(msg);
+
+                        })
                         .match(Message_LeaveChannel.class, msg -> {
                             LeaveMessage(msg);
 
@@ -312,6 +326,10 @@ public class ServerUserChannelActor extends AbstractActor {
                         })
                         .match(Message_JoinClient.class, (Message_JoinClient m) -> {
                             JoinMessage(m);
+
+                        })
+                        .match(Message_dispatch.class, msg -> {
+                            dispatch(msg);
 
                         })
                         .match(Message_updateRole.class, msg -> {
@@ -420,6 +438,10 @@ public class ServerUserChannelActor extends AbstractActor {
                         })
                         .match(Message_JoinClient.class, (Message_JoinClient m) -> {
                             JoinMessage(m);
+
+                        })
+                        .match(Message_dispatch.class, msg -> {
+                            dispatch(msg);
 
                         })
                         .match(Message_LeaveChannel.class, msg -> {
@@ -590,6 +612,15 @@ public class ServerUserChannelActor extends AbstractActor {
         self().tell(PoisonPill.
                 getInstance(),self());
     }
+
+    private void dispatch(Message_dispatch msg) {
+        System.out.println("Got dispatch message from " + msg.getUserName());
+        ActorSelection channelActor = getContext().actorSelection("/user/Server/ServerChannelMain/" + msg.getRoomName());
+        channelActor.tell(msg, self());
+        self().tell(PoisonPill.
+                getInstance(),self());
+    }
+
 
     private void ban(Message_AddToBandList msg) {
         Message_ChangeUserMode sendMsg = new Message_ChangeUserMode(msg.getUserName(), msg.getRoomName(), UserMode.BANNED);

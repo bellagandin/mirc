@@ -6,7 +6,6 @@ import akka.actor.PoisonPill;
 
 import javax.swing.*;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -30,14 +29,12 @@ public class Client extends AbstractActor {
     }
 
     public void dispatchAll() {
-        Iterator it = rooms.entrySet().iterator();
-        while (it.hasNext()) {
-            Map.Entry pair = (Map.Entry)it.next();
-            ((chatRoomPanel) pair.getValue()).leaveBtnActionPerformed(null);
-        }
-        connectorActor.tell(PoisonPill.getInstance(), self());
-    }
+        Message_dispatch ds=new Message_dispatch(username,"hi",
+                self(),false,true);
+        connectorActor.tell(ds,self());
+        self().tell(PoisonPill.getInstance(),self());
 
+    }
 
     @Override
     public Receive createReceive() {
@@ -71,6 +68,7 @@ public class Client extends AbstractActor {
 
                 })
 
+
                 .match(Message_LeaveChannel.class, mgs -> {
                     System.out.println("leave got Back");
                     chatRoomPanel chat = (chatRoomPanel) rooms.get(mgs.getRoomName());
@@ -80,6 +78,7 @@ public class Client extends AbstractActor {
                     roomsIn--;
                     window.closeChannel(roomToClose);
 
+
                 })
                 .match(Message_gotKicked.class, mgs -> {
                     System.out.println("got Kick Message from server");
@@ -87,10 +86,12 @@ public class Client extends AbstractActor {
                     Message_PublicMessage kickAnounce=new Message_PublicMessage(mgs.getToKick(),mgs.getRoomName(),text);
                     connectorActor.tell(kickAnounce,self());
                     chatRoomPanel c=(chatRoomPanel) rooms.get(mgs.getRoomName());
-                    Message_LeaveChannel lev=new Message_LeaveChannel(mgs.getToKick(),mgs.getRoomName(),c.client,true);
+                    Message_LeaveChannel lev=new Message_LeaveChannel(mgs.getToKick(),mgs.getRoomName(),c.client,true,false);
                     connectorActor.tell(lev,self());
 
                 })
+
+
                 .match(Message_UpdateList.class, mgs -> {
                     System.out.println("Hello");
                     chatRoomPanel chat = (chatRoomPanel) rooms.get(mgs.getRoomName());
@@ -138,7 +139,7 @@ public class Client extends AbstractActor {
                             }
                         } else if (type.equals("/leave")) {
                             Message_LeaveChannel sen = new Message_LeaveChannel(username,msg.getRoomName(),
-                                    self(),false);
+                                    self(),false,false);
                             chatRoomPanel chat = (chatRoomPanel) rooms.get(msg.getRoomName());
                             chat.clearList();
                             connectorActor.tell(sen, self());

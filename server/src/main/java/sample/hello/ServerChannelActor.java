@@ -61,8 +61,30 @@ public class ServerChannelActor extends AbstractActor {
                     Message_ReceiveMessage rec = new Message_ReceiveMessage(roomName, m.getUserName(), "", message);
                     router.route(rec, self());
                 })
+                .match(Message_dispatch.class, m -> {
+                    System.out.println("Channel"+m.getRoomName()+" Got dispatch message from " + m.getUserName());
+                    router = router.removeRoutee(getSender());
+
+                    for(int i=0;i<users.size();i++){
+                        String temp=users.get(i);
+                        if(users.get(i).charAt(0)=='@'||users.get(i).charAt(0)=='+' )
+                            temp=temp.substring(1);
+                        if (temp.equals(m.getUserName())) {
+                            users.remove(i);
+                            break;
+                        }
+                    }
+                    router.route(new Message_UpdateList(roomName,users),sender());
+                    String message;
+                    if(!m.isKicked()){
+                        message = "[" + m.getTimeStamp() + "]*** parts: " + m.getTimeStamp();
+                        router.route(message, m.getClient());
+                    }
+                })
+
+
                 .match(Message_LeaveChannel.class, m -> {
-                    System.out.println("Channel Got Leave message from " + m.getUserName());
+                    System.out.println("Channel"+m.getRoomName()+" Got Leave message from " + m.getUserName());
                     router = router.removeRoutee(getSender());
 
                         for(int i=0;i<users.size();i++){
@@ -76,10 +98,12 @@ public class ServerChannelActor extends AbstractActor {
                         }
                         router.route(new Message_UpdateList(roomName,users),sender());
                     String message;
-                    if(m.isKicked()){
+                    if(!m.isKicked()){
                     message = "[" + m.getTimeStamp() + "]*** parts: " + m.getTimeStamp();
-                    router.route(message, m.getClient());}
-                        m.getClient().tell(m,self());
+                    router.route(message, m.getClient());
+                    }
+                    m.getClient().tell(m,self());
+
 
                 })
                 .match(Message_PublicMessage.class, msg -> {
@@ -89,6 +113,7 @@ public class ServerChannelActor extends AbstractActor {
                             msg.getRoomName(), msg.getUserName(), "", message);
                     router.route(rec, getSender());
                 })
+
                 .match(Message_PermissionToChangeTitle.class, msg -> {
                     System.out.println("Channel actor: rec message from" + msg.getUserName());
                     roomTitle = msg.getNewTitleName();
