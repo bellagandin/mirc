@@ -158,7 +158,7 @@ public class chatRoomPanel  extends javax.swing.JPanel{
     }
     public void changeTitle(String newTitle){
         roomName=roomName;
-        roomTitle.setText("room title is "+newTitle+" Uer in as "+username);
+        roomTitle.setText("room title is "+newTitle+" User in as "+username);
 
     }
 

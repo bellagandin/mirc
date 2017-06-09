@@ -159,7 +159,7 @@ public class Client extends AbstractActor {
                             String kicked[] = theRest.split(" ", 2);
                             Message_KickUser sen = new Message_KickUser(username,msg.getRoomName(),username,kicked[0],false);
                             connectorActor.tell(sen, self());
-                            Message_AddToBandList sendMsg = new Message_AddToBandList(kicked[0],msg.getRoomName());
+                            Message_AddToBandList sendMsg = new Message_AddToBandList(kicked[0],username,msg.getRoomName());
                             connectorActor.tell(sendMsg, self());
 
                         } else if (type.equals("/add")) {
