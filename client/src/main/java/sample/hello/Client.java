@@ -157,10 +157,11 @@ public class Client extends AbstractActor {
                         } else if (type.equals("/ban")) {
                             System.out.println("Got ban message passing to server");
                             String kicked[] = theRest.split(" ", 2);
-                            Message_AddToBandList sendMsg = new Message_AddToBandList(kicked[0],msg.getRoomName());
-                            connectorActor.tell(sendMsg, self());
                             Message_KickUser sen = new Message_KickUser(username,msg.getRoomName(),username,kicked[0],false);
                             connectorActor.tell(sen, self());
+                            Message_AddToBandList sendMsg = new Message_AddToBandList(kicked[0],msg.getRoomName());
+                            connectorActor.tell(sendMsg, self());
+
                         } else if (type.equals("/add")) {
                             String res[] = theRest.split(" ", 3);
                             UserMode mode;
